@@ -161,7 +161,8 @@ Requirements:
 - engine identity captured once per campaign;
 - compile-only then runtime modes;
 - cleanup after success, crash, timeout and coordinator interruption;
-- coordinator runnable under both Rakudo and Raku++.
+- coordinator runs under Raku++; observed engines remain arbitrary child
+  commands and do not host RakuMap itself.
 
 The first planted programs exit normally, reject at compile time, loop forever,
 fork/spawn a lingering child, crash, and emit unbounded output. Each must yield
@@ -324,8 +325,9 @@ Modules appear when their phase starts; empty architecture is not progress.
    rejected.
 9. **Replay:** every checked-in dossier reproduces from source and reports an
    engine-identity mismatch clearly.
-10. **Cross-engine coordinator:** the harness tests pass when invoked by pinned
-    Rakudo and Raku++.
+10. **Raku++ host:** the harness and every shipped `rakumap` command run under
+    pinned Raku++; Rakudo may be an observed oracle child but is never the host
+    interpreter for RakuMap.
 
 Every gate gets a planted defect before it is trusted.
 
@@ -359,7 +361,8 @@ keeps each tool usable with any Raku implementation and independently releasable
 P0-P5 are v0.1.0. It ships only when the runner is containment-tested, the
 numeric-v1 fixed campaign meets its validity ceiling, every stable planted
 divergence shrinks to its expected minimum, and the whole campaign replays under
-both coordinator engines.
+Raku++ as the coordinator, with both Rakudo and Raku++ exercised as observed
+child engines.
 
 The release statement is narrow:
 
@@ -370,4 +373,3 @@ The release statement is narrow:
 
 That is enough foundation to add language domains without changing what a
 finding means.
-

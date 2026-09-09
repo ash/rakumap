@@ -95,8 +95,8 @@ rakumap stats
 Run the current scaffold:
 
 ```sh
-raku -Ilib bin/rakumap help
-raku -Ilib t/00-load.rakutest
+rakupp -Ilib bin/rakumap help
+rakupp -Ilib t/00-load.rakutest
 ```
 
 ## Finding layout
@@ -123,4 +123,3 @@ model, initial CLI vocabulary and implementation plan are in place. No search
 result is claimed yet.
 
 See [docs/PLAN.md](docs/PLAN.md) for the phased build and release gates.
-

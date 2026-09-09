@@ -1,4 +1,4 @@
-#!/usr/bin/env raku
+#!/usr/bin/env rakupp
 
 use lib $?FILE.IO.parent.parent.add('lib').Str;
 use RakuMap;
@@ -34,4 +34,3 @@ sub MAIN(Str $command = 'help') {
         }
     }
 }
-
