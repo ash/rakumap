@@ -2,35 +2,71 @@
 
 use lib $?FILE.IO.parent.parent.add('lib').Str;
 use RakuMap;
+use RakuMap::Campaign;
 
 sub usage() {
     say qq:to/USAGE/;
     RakuMap {VERSION} — autonomous differential exploration for Raku
 
     Usage:
-      rakumap help
+      rakumap generate [--generator=NAME|all] [--seed=N] [--cases=N] [--out=DIR]
+      rakumap explore  [--oracle=PATH] [--candidate=PATH]
+                       [--generator=NAME|all]
+                       [--seed=N] [--cases=N] [--timeout=N] [--repeat=N]
+                       [--out=DIR]
+      rakumap replay DOSSIER [--oracle=PATH] [--candidate=PATH] [--timeout=N]
       rakumap version
-
-    Planned commands:
-      rakumap explore   Generate or mutate cases and compare engines
-      rakumap replay    Reproduce a finding dossier
-      rakumap shrink    Minimize while preserving a divergence signature
-      rakumap classify  Record a human disposition
-      rakumap export    Prepare a Rakugrid or engine-regression case
-      rakumap stats     Summarize campaigns and findings
-
-    See docs/PLAN.md for the implementation phases.
     USAGE
 }
 
-sub MAIN(Str $command = 'help') {
+sub options(@args --> Hash:D) {
+    my %o; my @positionals;
+    for @args -> $arg {
+        if $arg.starts-with('--') && $arg.contains('=') {
+            my ($key, $value) = $arg.substr(2).split('=', 2); %o{$key} = $value;
+        } else { @positionals.push($arg) }
+    }
+    %o<positionals> = @positionals; %o
+}
+
+sub int-option(%o, Str:D $name, Int:D $default --> Int:D) {
+    return $default unless %o{$name}:exists;
+    my $value = try +%o{$name};
+    die "--$name needs an integer" unless $value.defined;
+    $value.Int
+}
+
+sub MAIN(*@args) {
+    my $command = @args.shift // 'help'; my %o = options(@args);
     given $command {
         when 'help' | '--help' | '-h' { usage }
         when 'version' | '--version' | '-V' { say VERSION }
-        default {
-            note "RakuMap: command '$command' is planned but not implemented";
-            note "See docs/PLAN.md";
-            exit 2;
+        when 'generate' {
+            my $out = (%o<out> // 'out/generated').IO;
+            my $generator = %o<generator> // 'numeric';
+            my $n = generate-cases(:$generator, :seed(int-option(%o, 'seed', 1)),
+                :cases(int-option(%o, 'cases', 10)), :$out);
+            say "generated $n programs ($generator) in {$out.Str}";
         }
+        when 'explore' {
+            my $out = (%o<out> // 'out/latest').IO;
+            my %s = explore(:generator(%o<generator> // 'numeric'),
+                :oracle(%o<oracle> // 'raku'),
+                :candidate(%o<candidate> // 'rakupp'),
+                :seed(int-option(%o, 'seed', 1)),
+                :cases(int-option(%o, 'cases', 100)),
+                :timeout(int-option(%o, 'timeout', 5)),
+                :repetitions(int-option(%o, 'repeat', 2)), :$out);
+            say "done: {%s<cases>} cases, {%s<divergent>} divergences, "
+              ~ "{%s<stable>} stable, {%s<oracle-invalid>} oracle-invalid";
+        }
+        when 'replay' {
+            my $path = %o<positionals>[0] // die 'usage: rakumap replay DOSSIER';
+            my $ok = replay($path.IO, :oracle(%o<oracle> // 'raku'),
+                :candidate(%o<candidate> // 'rakupp'),
+                :timeout(int-option(%o, 'timeout', 5)));
+            exit($ok ?? 0 !! 1);
+        }
+        default { note "unknown command '$command'"; usage; exit 2 }
     }
 }

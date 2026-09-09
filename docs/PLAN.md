@@ -1,6 +1,7 @@
 # Plan: map the behaviour beyond the grid
 
-*Written 2026-09-09, before implementation.*
+*Written 2026-09-09, before implementation. Implementation status updated as
+the vertical slices land.*
 
 RakuMap is an autonomous differential explorer for Raku implementations. It is
 a sibling of Rakugrid, not a replacement: Rakugrid owns durable behavioural
@@ -133,7 +134,7 @@ identity it is trying to preserve.
 
 ## Phases
 
-### P0 — repository and contract
+### P0 — repository and contract (complete)
 
 - project name and Rakugrid boundary;
 - CLI vocabulary;
@@ -143,7 +144,7 @@ identity it is trying to preserve.
 
 No result is claimed in P0.
 
-### P1 — bounded engine runner
+### P1 — bounded engine runner (initial implementation)
 
 Implement one reliable primitive:
 
@@ -168,7 +169,7 @@ The first planted programs exit normally, reject at compile time, loop forever,
 fork/spawn a lingering child, crash, and emit unbounded output. Each must yield
 one bounded observation and leave no process behind.
 
-### P2 — campaign and replay
+### P2 — campaign and replay (initial implementation)
 
 Define canonical campaign JSON: engines, generator and version, seed interval,
 budgets, comparator and normalizer versions, stability repetitions and output
@@ -182,7 +183,7 @@ finish out of order; dossier identities and final summaries remain deterministic
 engine identity unless explicitly relaxed, and reports whether the original
 signature reproduced.
 
-### P3 — numeric-v1 generator
+### P3 — numeric-v1 generator (initial implementation)
 
 Build a small typed expression language rather than random source text:
 
@@ -255,6 +256,9 @@ If the oracle violates the promised relation, that is transformation debt or an
 oracle lead, not automatically a candidate failure.
 
 ### P7 — signatures, containers, Unicode and regex domains
+
+Status: the shared registry and initial `containers-v1` generator are
+implemented. Signatures/dispatch, Unicode and regex remain next.
 
 Add one domain per release, each with its own validity model, comparators,
 reducers and measurable invalid-rate ceiling. Do not build one universal Raku

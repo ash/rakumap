@@ -1,0 +1,22 @@
+use lib $?FILE.IO.parent.parent.add('lib').Str;
+use Test;
+use RakuMap::Generator::Numeric;
+
+plan 7;
+
+my %first = generate-numeric(48);
+my %again = generate-numeric(48);
+my %next = generate-numeric(49);
+
+is %first<source>, %again<source>, 'same seed renders identical source';
+is-deeply %first<witness>, %again<witness>, 'same seed renders identical witness';
+isnt %first<source>, %next<source>, 'neighboring seed explores another program';
+is %first<witness><generator>, 'numeric-v1', 'generator version is recorded';
+is %first<witness><confidence>, 'C', 'restricted generator reports confidence C';
+
+my $source = $*TMPDIR.add("rakumap-generator-$*PID.raku");
+$source.spurt(%first<source>);
+my $compile = run $*EXECUTABLE, '-c', $source.Str, :out, :err;
+is $compile.exitcode, 0, 'generated program compiles under the Raku++ host';
+ok %first<source>.contains("say 'TYPE\\t'"), 'program emits a typed observation envelope';
+$source.unlink;

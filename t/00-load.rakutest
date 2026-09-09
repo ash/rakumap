@@ -4,5 +4,4 @@ use RakuMap;
 
 plan 2;
 is project-name(), 'RakuMap', 'module loads';
-is VERSION, '0.0.1', 'version is explicit';
-
+is VERSION, '0.1.0-dev', 'version is explicit';

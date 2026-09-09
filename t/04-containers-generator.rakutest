@@ -1,0 +1,39 @@
+use lib $?FILE.IO.parent.parent.add('lib').Str;
+use Test;
+use RakuMap::Generator::Containers;
+use RakuMap::Generator::Registry;
+use RakuMap::Campaign;
+
+plan 12;
+
+is-deeply generator-names(), <numeric containers>, 'registry lists implemented domains';
+is-deeply selected-generators('all'), <numeric containers>, 'all expands through registry';
+
+my %first = generate-containers(40);
+my %again = generate-case('containers', 40);
+is %first<source>, %again<source>, 'registry preserves deterministic source';
+is-deeply %first<witness>, %again<witness>, 'registry preserves generation witness';
+is %first<witness><generator>, 'containers-v1', 'domain version is recorded';
+is %first<witness><confidence>, 'C', 'restricted generator reports confidence C';
+
+my %templates;
+for 0 .. 99 -> $seed {
+    my %case = generate-containers($seed);
+    %templates{%case<witness><template>} = True;
+    my $source = $*TMPDIR.add("rakumap-containers-$*PID-$seed.raku");
+    $source.spurt(%case<source>);
+    my $compile = run $*EXECUTABLE, '-c', $source.Str, :out, :err;
+    die "seed $seed did not compile" if $compile.exitcode;
+    $source.unlink;
+}
+is %templates.elems, 10, 'seed sweep reaches every container template';
+lives-ok { generate-case('containers', 999) }, 'arbitrary seed generates successfully';
+
+my $out = $*TMPDIR.add("rakumap-all-generators-$*PID");
+is generate-cases(:generator<all>, :seed(10), :cases(2), :$out), 4,
+    'all counts cases across domains';
+is $out.add('numeric').dir(test => / '.raku' $/).elems, 2,
+    'all writes a numeric domain directory';
+is $out.add('containers').dir(test => / '.raku' $/).elems, 2,
+    'all writes a containers domain directory';
+dies-ok { generate-case('unknown', 1) }, 'unknown domains fail visibly';

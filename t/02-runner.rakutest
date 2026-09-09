@@ -1,0 +1,24 @@
+use lib $?FILE.IO.parent.parent.add('lib').Str;
+use Test;
+use RakuMap::Runner;
+
+plan 7;
+
+my $root = $?FILE.IO.parent.parent;
+my $source = $*TMPDIR.add("rakumap-runner-$*PID.raku");
+$source.spurt("say 1;\n");
+
+my %accepted = observe($root.add('fixtures/engines/echo-a.sh').absolute.Str, $source, $*TMPDIR, :timeout(2));
+is %accepted<compile><status>, 'accepted', 'compile acceptance is classified';
+is %accepted<run><status>, 'completed', 'normal execution is classified';
+is %accepted<run><stdout>, "A\n", 'stdout is preserved';
+
+my %rejected = observe($root.add('fixtures/engines/reject.sh').absolute.Str, $source, $*TMPDIR, :timeout(2));
+is %rejected<compile><status>, 'rejected', 'compile rejection is classified';
+ok %rejected<compile><stderr>.contains('planted rejection'), 'compile stderr is preserved';
+
+my %hung = run-guarded($root.add('fixtures/engines/hang.sh').absolute.Str, [], $*TMPDIR, :timeout(1));
+is %hung<status>, 'timeout', 'wall timeout is classified';
+ok %hung<duration-ms> < 5000, 'timeout returns promptly';
+
+$source.unlink;

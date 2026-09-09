@@ -1,10 +1,15 @@
 {
   "name": "RakuMap",
-  "version": "0.0.1",
+  "version": "0.1.0-dev",
   "description": "Differential exploration and shrinking for Raku implementations",
   "source-url": "git://github.com/ash/rakumap.git",
   "provides": {
-    "RakuMap": "lib/RakuMap.rakumod"
+    "RakuMap": "lib/RakuMap.rakumod",
+    "RakuMap::Campaign": "lib/RakuMap/Campaign.rakumod",
+    "RakuMap::Generator::Containers": "lib/RakuMap/Generator/Containers.rakumod",
+    "RakuMap::Generator::Numeric": "lib/RakuMap/Generator/Numeric.rakumod",
+    "RakuMap::Generator::Registry": "lib/RakuMap/Generator/Registry.rakumod",
+    "RakuMap::Runner": "lib/RakuMap/Runner.rakumod"
   },
   "depends": [],
   "test-depends": ["Test"],
@@ -14,4 +19,3 @@
     "source": "https://github.com/ash/rakumap"
   }
 }
-

@@ -73,53 +73,72 @@ RakuMap never claims that random text is a correct program.
 Confidence is visible on every case: imported known-valid, metamorphic,
 typed-generated, oracle-accepted exploratory, or intentionally invalid.
 
-## Intended command line
+## Current command line
 
-The checked-in CLI currently establishes the command vocabulary; the engine
-runner lands first.
+The first vertical slice is live: deterministic numeric program generation,
+bounded two-engine execution, stability checks, persisted dossiers and replay.
+RakuMap itself is hosted by Raku++; Rakudo is invoked only as an observed child
+when it is selected as the oracle.
 
 ```sh
-rakumap explore --generator=numeric --cases=10000 --seed=1000 \
+rakupp -Ilib bin/rakumap generate --cases=20 --seed=1000 \
+  --out=out/generated
+
+# Generate 20 programs per implemented domain:
+rakupp -Ilib bin/rakumap generate --generator=all --cases=20 --seed=1000 \
+  --out=out/generated-all
+
+rakupp -Ilib bin/rakumap explore --generator=containers --cases=10000 --seed=1000 \
   --oracle=raku --candidate=/path/to/rakupp
 
+rakupp -Ilib bin/rakumap replay out/latest/findings/numeric-00001048 \
+  --oracle=raku --candidate=/path/to/rakupp
+
+# Planned commands:
 rakumap mutate t/seeds/signatures.raku --transform=container-layer \
   --oracle=raku --candidate=/path/to/rakupp
-
-rakumap replay out/findings/2026-09-09-00017
 rakumap shrink out/findings/2026-09-09-00017
 rakumap classify out/findings/2026-09-09-00017 --as=candidate-defect
 rakumap export out/findings/2026-09-09-00017 --rakugrid=/path/to/rakugrid
 rakumap stats
 ```
 
-Run the current scaffold:
+Run the test suite with Raku++:
 
 ```sh
 rakupp -Ilib bin/rakumap help
-rakupp -Ilib t/00-load.rakutest
+for test_file in t/*.rakutest; do rakupp -Ilib "$test_file" || break; done
 ```
 
 ## Finding layout
 
 ```text
 out/findings/2026-09-09-00017/
-  case.raku             minimized reproducer
+  case.raku             current reproducer (not minimized yet)
   original.raku         first generated program
   finding.json          seed, generator, engines, classification, signature
   oracle.stdout
   oracle.stderr
   candidate.stdout
   candidate.stderr
+  oracle.signature
+  candidate.signature
 ```
 
-Generated bulk output lives under `out/` and is not committed. A small curated
-`fixtures/` and fixed-seed campaign corpus will be committed as the project
-grows.
+Generated bulk output lives under `out/` and is not committed. The fixed seeds
+40–49 are checked in for both implemented domains under
+`fixtures/generated/numeric-v1/` and `fixtures/generated/containers-v1/`. The
+first real stable divergence (numeric seed 48) is preserved under
+`fixtures/findings/numeric-00000048/` with both engines' raw observations.
 
 ## Status
 
-Phase 0: repository and contract. The name, boundary with Rakugrid, finding
-model, initial CLI vocabulary and implementation plan are in place. No search
-result is claimed yet.
+The first P1-P3 implementation and the first P7 domain extension are in place.
+The registry currently exposes `numeric` and `containers`; `--generator=all`
+runs both. It deliberately remains smaller
+than the release claim: output limits, campaign resume, engine identity,
+clustering and syntax-aware shrinking still need to land. The current fixed
+generator already produces replayable numeric divergences and reports every
+oracle rejection instead of silently filtering it.
 
 See [docs/PLAN.md](docs/PLAN.md) for the phased build and release gates.

@@ -1,0 +1,27 @@
+use lib $?FILE.IO.parent.parent.add('lib').Str;
+use Test;
+use RakuMap::Campaign;
+
+plan 8;
+
+my $root = $?FILE.IO.parent.parent;
+my $out = $*TMPDIR.add("rakumap-campaign-$*PID");
+my $oracle = $root.add('fixtures/engines/echo-a.sh').absolute.Str;
+my $candidate = $root.add('fixtures/engines/echo-b.sh').absolute.Str;
+
+my %summary = explore(
+    :seed(70), :cases(2), :repetitions(2), :timeout(2),
+    :$oracle, :$candidate, :$out,
+);
+
+is %summary<cases>, 2, 'requested seeds were explored';
+is %summary<divergent>, 2, 'planted output differences are detected';
+is %summary<stable>, 2, 'repeated planted differences are stable';
+
+my $finding = $out.add('findings/numeric-00000070');
+ok $finding.add('case.raku').f, 'reproducer is persisted';
+ok $finding.add('original.raku').f, 'original source is persisted';
+ok $finding.add('finding.json').f, 'machine-readable metadata is persisted';
+ok $finding.add('finding.json').slurp.contains('"stability": "stable"'),
+    'metadata records stability';
+ok replay($finding, :$oracle, :$candidate, :timeout(2)), 'persisted finding reproduces';
