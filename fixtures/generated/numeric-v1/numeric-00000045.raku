@@ -7,7 +7,7 @@ sub safe-str($v) {
 
 sub carry() { min((-1 + 0e0), (+7/3)) }
 my $value = carry();
-say 'TYPE\t' ~ $value.^name;
-say 'RAKU\t' ~ $value.raku;
-say 'STR\t' ~ safe-str($value);
-say 'BOOL\t' ~ $value.Bool;
+say "TYPE\t" ~ $value.^name;
+say "RAKU\t" ~ $value.raku;
+say "STR\t" ~ safe-str($value);
+say "BOOL\t" ~ $value.Bool;

@@ -7,7 +7,7 @@ sub safe-str($v) {
 
 sub carry($x) { $x }
 my $value = carry(0e0);
-say 'TYPE\t' ~ $value.^name;
-say 'RAKU\t' ~ $value.raku;
-say 'STR\t' ~ safe-str($value);
-say 'BOOL\t' ~ $value.Bool;
+say "TYPE\t" ~ $value.^name;
+say "RAKU\t" ~ $value.raku;
+say "STR\t" ~ safe-str($value);
+say "BOOL\t" ~ $value.Bool;

@@ -7,7 +7,7 @@ sub safe-str($v) {
 
 my $source = (+(+(10 / NaN)));
 my $value = $source;
-say 'TYPE\t' ~ $value.^name;
-say 'RAKU\t' ~ $value.raku;
-say 'STR\t' ~ safe-str($value);
-say 'BOOL\t' ~ $value.Bool;
+say "TYPE\t" ~ $value.^name;
+say "RAKU\t" ~ $value.raku;
+say "STR\t" ~ safe-str($value);
+say "BOOL\t" ~ $value.Bool;

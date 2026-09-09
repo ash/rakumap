@@ -6,7 +6,7 @@ sub safe-str($v) {
 }
 
 my $value = (max((9223372036854775807 + "1.5"), (-NaN)) - 1+2i);
-say 'TYPE\t' ~ $value.^name;
-say 'RAKU\t' ~ $value.raku;
-say 'STR\t' ~ safe-str($value);
-say 'BOOL\t' ~ $value.Bool;
+say "TYPE\t" ~ $value.^name;
+say "RAKU\t" ~ $value.raku;
+say "STR\t" ~ safe-str($value);
+say "BOOL\t" ~ $value.Bool;

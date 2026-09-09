@@ -65,10 +65,10 @@ sub safe-str($v) {
 HEADER
     $source ~= $setup ~ q:to/OBSERVE/;
 
-say 'TYPE\t' ~ $value.^name;
-say 'RAKU\t' ~ $value.raku;
-say 'STR\t' ~ safe-str($value);
-say 'BOOL\t' ~ $value.Bool;
+say "TYPE\t" ~ $value.^name;
+say "RAKU\t" ~ $value.raku;
+say "STR\t" ~ safe-str($value);
+say "BOOL\t" ~ $value.Bool;
 OBSERVE
 
     { source => $source, witness => {

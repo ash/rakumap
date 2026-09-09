@@ -18,5 +18,5 @@ my $source = $*TMPDIR.add("rakumap-generator-$*PID.raku");
 $source.spurt(%first<source>);
 my $compile = run $*EXECUTABLE, '-c', $source.Str, :out, :err;
 is $compile.exitcode, 0, 'generated program compiles under the Raku++ host';
-ok %first<source>.contains("say 'TYPE\\t'"), 'program emits a typed observation envelope';
+ok %first<source>.contains('say "TYPE\t"'), 'program emits a tab-separated observation envelope';
 $source.unlink;
