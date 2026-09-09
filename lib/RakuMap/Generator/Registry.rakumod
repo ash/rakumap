@@ -3,8 +3,9 @@ unit module RakuMap::Generator::Registry;
 use RakuMap::Generator::Numeric;
 use RakuMap::Generator::Containers;
 use RakuMap::Generator::Signatures;
+use RakuMap::Generator::Unicode;
 
-our constant @GENERATORS is export = <numeric containers signatures>;
+our constant @GENERATORS is export = <numeric containers signatures unicode>;
 
 sub generator-names(--> List:D) is export { @GENERATORS.List }
 
@@ -20,6 +21,7 @@ sub generate-case(Str:D $generator, Int:D $seed --> Hash:D) is export {
         when 'numeric' { generate-numeric($seed) }
         when 'containers' { generate-containers($seed) }
         when 'signatures' { generate-signatures($seed) }
+        when 'unicode' { generate-unicode($seed) }
         default { die "unknown generator '$generator'" }
     }
 }

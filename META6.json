@@ -10,6 +10,7 @@
     "RakuMap::Generator::Numeric": "lib/RakuMap/Generator/Numeric.rakumod",
     "RakuMap::Generator::Registry": "lib/RakuMap/Generator/Registry.rakumod",
     "RakuMap::Generator::Signatures": "lib/RakuMap/Generator/Signatures.rakumod",
+    "RakuMap::Generator::Unicode": "lib/RakuMap/Generator/Unicode.rakumod",
     "RakuMap::Runner": "lib/RakuMap/Runner.rakumod"
   },
   "depends": [],

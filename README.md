@@ -89,6 +89,7 @@ lib/
       Numeric.rakumod             deterministic numeric-v1 program generator
       Containers.rakumod          deterministic containers-v1 program generator
       Signatures.rakumod          deterministic signatures-v1 program generator
+      Unicode.rakumod             deterministic unicode-v1 program generator
 
 t/
   00-load.rakutest                public module/version smoke test
@@ -97,6 +98,7 @@ t/
   03-campaign.rakutest            planted divergence, dossier and replay checks
   04-containers-generator.rakutest registry and container-template coverage
   05-signatures-generator.rakutest signature determinism and template coverage
+  06-unicode-generator.rakutest   Unicode determinism and template coverage
 
 fixtures/
   engines/                        small shell engines with planted behaviours
@@ -104,6 +106,7 @@ fixtures/
     numeric-v1/                   committed numeric programs for seeds 40–49
     containers-v1/                committed container programs for seeds 40–49
     signatures-v1/                committed signature programs for seeds 40–51
+    unicode-v1/                   committed Unicode programs for seeds 40–51
   findings/
     numeric-00000048/             first preserved real differential finding
 
@@ -180,17 +183,18 @@ out/findings/2026-09-09-00017/
 
 Generated bulk output lives under `out/` and is not committed. The fixed seeds
 Fixed corpora are checked in under `fixtures/generated/numeric-v1/`,
-`fixtures/generated/containers-v1/`, and `fixtures/generated/signatures-v1/`.
-The numeric and container sets use seeds 40–49; signatures uses 40–51 so all
-12 binding/dispatch templates are represented. The
+`fixtures/generated/containers-v1/`, `fixtures/generated/signatures-v1/`, and
+`fixtures/generated/unicode-v1/`. The numeric and container sets use seeds
+40–49; signatures and Unicode use 40–51 so all 12 templates in each domain are
+represented. The
 first real stable divergence (numeric seed 48) is preserved under
 `fixtures/findings/numeric-00000048/` with both engines' raw observations.
 
 ## Status
 
-The first P1-P3 implementation and two P7 domain extensions are in place.
-The registry currently exposes `numeric`, `containers`, and `signatures`;
-`--generator=all` runs all three. It deliberately remains smaller
+The first P1-P3 implementation and three P7 domain extensions are in place.
+The registry currently exposes `numeric`, `containers`, `signatures`, and
+`unicode`; `--generator=all` runs all four. It deliberately remains smaller
 than the release claim: output limits, campaign resume, engine identity,
 clustering and syntax-aware shrinking still need to land. The current fixed
 generator already produces replayable numeric divergences and reports every

@@ -257,8 +257,8 @@ oracle lead, not automatically a candidate failure.
 
 ### P7 — signatures, containers, Unicode and regex domains
 
-Status: the shared registry plus initial `containers-v1` and `signatures-v1`
-generators are implemented. Unicode and regex remain next.
+Status: the shared registry plus initial `containers-v1`, `signatures-v1`, and
+`unicode-v1` generators are implemented. Regex remains next.
 
 Add one domain per release, each with its own validity model, comparators,
 reducers and measurable invalid-rate ceiling. Do not build one universal Raku
