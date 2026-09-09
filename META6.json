@@ -1,0 +1,17 @@
+{
+  "name": "RakuMap",
+  "version": "0.0.1",
+  "description": "Differential exploration and shrinking for Raku implementations",
+  "source-url": "git://github.com/ash/rakumap.git",
+  "provides": {
+    "RakuMap": "lib/RakuMap.rakumod"
+  },
+  "depends": [],
+  "test-depends": ["Test"],
+  "resources": [],
+  "tags": ["raku", "testing", "differential", "fuzzing"],
+  "support": {
+    "source": "https://github.com/ash/rakumap"
+  }
+}
+

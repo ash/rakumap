@@ -1,0 +1,37 @@
+#!/usr/bin/env raku
+
+use lib $?FILE.IO.parent.parent.add('lib').Str;
+use RakuMap;
+
+sub usage() {
+    say qq:to/USAGE/;
+    RakuMap {VERSION} — autonomous differential exploration for Raku
+
+    Usage:
+      rakumap help
+      rakumap version
+
+    Planned commands:
+      rakumap explore   Generate or mutate cases and compare engines
+      rakumap replay    Reproduce a finding dossier
+      rakumap shrink    Minimize while preserving a divergence signature
+      rakumap classify  Record a human disposition
+      rakumap export    Prepare a Rakugrid or engine-regression case
+      rakumap stats     Summarize campaigns and findings
+
+    See docs/PLAN.md for the implementation phases.
+    USAGE
+}
+
+sub MAIN(Str $command = 'help') {
+    given $command {
+        when 'help' | '--help' | '-h' { usage }
+        when 'version' | '--version' | '-V' { say VERSION }
+        default {
+            note "RakuMap: command '$command' is planned but not implemented";
+            note "See docs/PLAN.md";
+            exit 2;
+        }
+    }
+}
+
