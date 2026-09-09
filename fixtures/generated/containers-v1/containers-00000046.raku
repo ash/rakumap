@@ -1,7 +1,7 @@
-use v6.d;
-
 my Numeric $source = True;
 my $value = $source;
+
+
 sub safe-str($v) {
     my $s = try $v.Str;
     $s.defined ?? $s !! '<undefined>'

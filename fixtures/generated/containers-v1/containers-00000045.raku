@@ -1,9 +1,9 @@
-use v6.d;
-
 sub replace($x is copy) { $x = -1; $x }
 my $source = 0;
 my $result = replace($source);
 my $value = ($source, $result);
+
+
 sub safe-str($v) {
     my $s = try $v.Str;
     $s.defined ?? $s !! '<undefined>'

@@ -57,7 +57,7 @@ sub generate-containers(Int:D $seed --> Hash:D) is export {
         }
     };
 
-    my $source = "use v6.d;\n\n" ~ $body ~ q:to/OBSERVE/;
+    my $source = $body ~ "\n\n" ~ q:to/OBSERVE/;
 
 sub safe-str($v) {
     my $s = try $v.Str;

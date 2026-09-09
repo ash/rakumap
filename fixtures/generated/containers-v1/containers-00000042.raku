@@ -1,8 +1,8 @@
-use v6.d;
-
 my @source = (42, "text");
 @source[0] = "text";
 my $value = @source;
+
+
 sub safe-str($v) {
     my $s = try $v.Str;
     $s.defined ?? $s !! '<undefined>'

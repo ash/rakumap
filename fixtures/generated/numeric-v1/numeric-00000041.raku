@@ -1,5 +1,3 @@
-use v6.d;
-
 sub safe-str($v) {
     my $s = try $v.Str;
     $s.defined ?? $s !! '<undefined>'

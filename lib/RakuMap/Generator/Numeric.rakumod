@@ -55,8 +55,6 @@ sub generate-numeric(Int:D $seed --> Hash:D) is export {
     };
 
     my $source = q:to/HEADER/;
-use v6.d;
-
 sub safe-str($v) {
     my $s = try $v.Str;
     $s.defined ?? $s !! '<undefined>'

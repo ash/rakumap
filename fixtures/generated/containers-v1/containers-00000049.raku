@@ -1,7 +1,7 @@
-use v6.d;
-
 my @source = (slip(42, "text"), 42);
 my $value = (@source.elems, @source);
+
+
 sub safe-str($v) {
     my $s = try $v.Str;
     $s.defined ?? $s !! '<undefined>'

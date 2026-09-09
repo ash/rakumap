@@ -1,8 +1,8 @@
-use v6.d;
-
 my @inner = ("text", 0);
 my @source = item(@inner);
 my $value = (@source.elems, @source[0].^name, @source[0]);
+
+
 sub safe-str($v) {
     my $s = try $v.Str;
     $s.defined ?? $s !! '<undefined>'

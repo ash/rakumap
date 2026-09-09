@@ -1,9 +1,9 @@
-use v6.d;
-
 my $source = 1/2;
 my $alias := $source;
 $alias = True;
 my $value = ($source, $alias);
+
+
 sub safe-str($v) {
     my $s = try $v.Str;
     $s.defined ?? $s !! '<undefined>'
