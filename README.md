@@ -73,6 +73,56 @@ RakuMap never claims that random text is a correct program.
 Confidence is visible on every case: imported known-valid, metamorphic,
 typed-generated, oracle-accepted exploratory, or intentionally invalid.
 
+## Repository map
+
+```text
+bin/
+  rakumap                         command-line entry point; runs under rakupp
+
+lib/
+  RakuMap.rakumod                 project name and version
+  RakuMap/
+    Campaign.rakumod              generation, exploration, dossier writing, replay
+    Runner.rakumod                bounded compile/run of observed child engines
+    Generator/
+      Registry.rakumod            generator names and --generator=all dispatch
+      Numeric.rakumod             deterministic numeric-v1 program generator
+      Containers.rakumod          deterministic containers-v1 program generator
+
+t/
+  00-load.rakutest                public module/version smoke test
+  01-numeric-generator.rakutest   numeric determinism and generated-source checks
+  02-runner.rakutest              acceptance, rejection, output and timeout checks
+  03-campaign.rakutest            planted divergence, dossier and replay checks
+  04-containers-generator.rakutest registry and container-template coverage
+
+fixtures/
+  engines/                        small shell engines with planted behaviours
+  generated/
+    numeric-v1/                   committed numeric programs for seeds 40–49
+    containers-v1/                committed container programs for seeds 40–49
+  findings/
+    numeric-00000048/             first preserved real differential finding
+
+docs/
+  PLAN.md                         architecture, invariants, phases and release gates
+
+out/                              ignored, disposable local campaign output
+META6.json                        Raku distribution metadata and module index
+.gitignore                        excludes generated campaign and editor/build state
+```
+
+The code that generates programs belongs in `lib/RakuMap/Generator/`. Small,
+fixed examples used for review and regression live in `fixtures/generated/`.
+Exploration writes bulk programs and findings to `out/`; that directory is
+ignored because it may become large. A particularly useful finding may be
+copied to `fixtures/findings/` deliberately, together with its raw evidence.
+
+`fixtures/engines/` does not contain Raku implementations. Those scripts are
+controlled test doubles used to prove that RakuMap recognizes successful runs,
+compile rejection, differing output and timeouts without depending on a real
+engine defect.
+
 ## Current command line
 
 The first vertical slice is live: deterministic numeric program generation,
