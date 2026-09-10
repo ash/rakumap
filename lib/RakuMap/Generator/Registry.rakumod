@@ -5,8 +5,9 @@ use RakuMap::Generator::Containers;
 use RakuMap::Generator::Signatures;
 use RakuMap::Generator::Unicode;
 use RakuMap::Generator::Regex;
+use RakuMap::Generator::Control;
 
-our constant @GENERATORS is export = <numeric containers signatures unicode regex>;
+our constant @GENERATORS is export = <numeric containers signatures unicode regex control>;
 
 sub generator-names(--> List:D) is export { @GENERATORS.List }
 
@@ -24,6 +25,7 @@ sub generate-case(Str:D $generator, Int:D $seed --> Hash:D) is export {
         when 'signatures' { generate-signatures($seed) }
         when 'unicode' { generate-unicode($seed) }
         when 'regex' { generate-regex($seed) }
+        when 'control' { generate-control($seed) }
         default { die "unknown generator '$generator'" }
     }
 }

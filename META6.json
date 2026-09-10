@@ -7,6 +7,7 @@
     "RakuMap": "lib/RakuMap.rakumod",
     "RakuMap::Campaign": "lib/RakuMap/Campaign.rakumod",
     "RakuMap::Generator::Containers": "lib/RakuMap/Generator/Containers.rakumod",
+    "RakuMap::Generator::Control": "lib/RakuMap/Generator/Control.rakumod",
     "RakuMap::Generator::Numeric": "lib/RakuMap/Generator/Numeric.rakumod",
     "RakuMap::Generator::Registry": "lib/RakuMap/Generator/Registry.rakumod",
     "RakuMap::Generator::Regex": "lib/RakuMap/Generator/Regex.rakumod",
