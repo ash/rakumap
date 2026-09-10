@@ -1,0 +1,15 @@
+{
+  "format": 1,
+  "generator": "operators-v1",
+  "seed": 48,
+  "confidence": "C",
+  "context": "operator",
+  "expression": "13, 8",
+  "oracle": "/usr/local/bin/raku",
+  "candidate": "/tmp/rakupp-review-build2/rakupp",
+  "oracle-accepted": true,
+  "candidate-accepted": true,
+  "oracle-exit": 0,
+  "candidate-exit": 0,
+  "stability": "stable"
+}

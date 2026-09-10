@@ -1,0 +1,5 @@
+acceptaccepted0completed0TYPE	List
+RAKU	$(any(Bool::False, Bool::False, Bool::False, Bool::False, Bool::True, Bool::False), all(Bool::True, Bool::True))
+STR	<undefined>
+BOOL	True
+

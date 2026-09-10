@@ -92,6 +92,7 @@ lib/
       Unicode.rakumod             deterministic unicode-v1 program generator
       Regex.rakumod               deterministic regex-v1 program generator
       Control.rakumod             deterministic control-v1 program generator
+      Operators.rakumod           deterministic operators-v1 program generator
 
 t/
   00-load.rakutest                public module/version smoke test
@@ -103,6 +104,7 @@ t/
   06-unicode-generator.rakutest   Unicode determinism and template coverage
   07-regex-generator.rakutest     regex determinism and template coverage
   08-control-generator.rakutest   bounded control-flow template coverage
+  09-operators-generator.rakutest operator determinism and template coverage
 
 fixtures/
   engines/                        small shell engines with planted behaviours
@@ -113,8 +115,11 @@ fixtures/
     unicode-v1/                   committed Unicode programs for seeds 40–51
     regex-v1/                     committed regex programs for seeds 40–51
     control-v1/                   committed control-flow programs for seeds 40–51
+    operators-v1/                 committed operator programs for seeds 40–51
   findings/
     numeric-00000048/             first preserved real differential finding
+    operators-00000041/           preserved junction-output difference
+    operators-00000048/           preserved reduction-result difference
 
 docs/
   PLAN.md                         architecture, invariants, phases and release gates
@@ -190,18 +195,21 @@ out/findings/2026-09-09-00017/
 Generated bulk output lives under `out/` and is not committed. The fixed seeds
 Fixed corpora are checked in under `fixtures/generated/numeric-v1/`,
 `fixtures/generated/containers-v1/`, `fixtures/generated/signatures-v1/`, and
-`fixtures/generated/unicode-v1/`, and `fixtures/generated/regex-v1/`. The
-`control-v1/` corpus is checked in beside them. The numeric and container sets
-use seeds 40–49; signatures, Unicode, regex, and control use 40–51 so all 12
+`fixtures/generated/unicode-v1/`, `fixtures/generated/regex-v1/`,
+`fixtures/generated/control-v1/`, and `fixtures/generated/operators-v1/`. The
+numeric and container sets use seeds 40–49; signatures, Unicode, regex, control,
+and operators use 40–51 so all 12
 templates in each domain are represented. The
 first real stable divergence (numeric seed 48) is preserved under
-`fixtures/findings/numeric-00000048/` with both engines' raw observations.
+`fixtures/findings/numeric-00000048/`. Operator seeds 41 and 48 are preserved
+beside it. Each dossier contains both engines' raw observations.
 
 ## Status
 
-The first P1-P3 implementation and five domain extensions are in place.
+The first P1-P3 implementation and six domain extensions are in place.
 The registry currently exposes `numeric`, `containers`, `signatures`, and
-`unicode`, `regex`, and `control`; `--generator=all` runs all six. It
+`unicode`, `regex`, `control`, and `operators`; `--generator=all` runs all
+seven. It
 deliberately remains smaller
 than the release claim: output limits, campaign resume, engine identity,
 clustering and syntax-aware shrinking still need to land. The current fixed
