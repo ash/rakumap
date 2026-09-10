@@ -6,8 +6,8 @@ use RakuMap::Campaign;
 
 plan 12;
 
-is-deeply generator-names(), <numeric containers signatures unicode>, 'registry lists implemented domains';
-is-deeply selected-generators('all'), <numeric containers signatures unicode>, 'all expands through registry';
+is-deeply generator-names(), <numeric containers signatures unicode regex>, 'registry lists implemented domains';
+is-deeply selected-generators('all'), <numeric containers signatures unicode regex>, 'all expands through registry';
 
 my %first = generate-containers(40);
 my %again = generate-case('containers', 40);
@@ -30,7 +30,7 @@ is %templates.elems, 10, 'seed sweep reaches every container template';
 lives-ok { generate-case('containers', 999) }, 'arbitrary seed generates successfully';
 
 my $out = $*TMPDIR.add("rakumap-all-generators-$*PID");
-is generate-cases(:generator<all>, :seed(10), :cases(2), :$out), 8,
+is generate-cases(:generator<all>, :seed(10), :cases(2), :$out), 10,
     'all counts cases across domains';
 is $out.add('numeric').dir(test => / '.raku' $/).elems, 2,
     'all writes a numeric domain directory';
