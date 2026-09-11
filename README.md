@@ -95,6 +95,7 @@ lib/
       Operators.rakumod           deterministic operators-v1 program generator
       Types.rakumod               deterministic types-v1 program generator
       Variables.rakumod           deterministic variables-v1 program generator
+      Subs.rakumod                deterministic subs-v1 program generator
 
 t/
   00-load.rakutest                public module/version smoke test
@@ -109,6 +110,7 @@ t/
   09-operators-generator.rakutest operator determinism and template coverage
   10-types-generator.rakutest     type-system determinism and template coverage
   11-variables-generator.rakutest variable and binding template coverage
+  12-subs-generator.rakutest      subroutine determinism and template coverage
 
 fixtures/
   engines/                        small shell engines with planted behaviours
@@ -122,6 +124,7 @@ fixtures/
     operators-v1/                 committed operator programs for seeds 40–51
     types-v1/                     committed type-system programs for seeds 40–51
     variables-v1/                 committed variable programs for seeds 40–51
+    subs-v1/                      committed subroutine programs for seeds 40–51
   findings/
     numeric-00000048/             first preserved real differential finding
     operators-00000041/           preserved junction-output difference
@@ -204,9 +207,10 @@ Fixed corpora are checked in under `fixtures/generated/numeric-v1/`,
 `fixtures/generated/containers-v1/`, `fixtures/generated/signatures-v1/`, and
 `fixtures/generated/unicode-v1/`, `fixtures/generated/regex-v1/`,
 `fixtures/generated/control-v1/`, `fixtures/generated/operators-v1/`, and
-`fixtures/generated/types-v1/`, and `fixtures/generated/variables-v1/`. The
+`fixtures/generated/types-v1/`, `fixtures/generated/variables-v1/`, and
+`fixtures/generated/subs-v1/`. The
 numeric and container sets use seeds 40–49; signatures, Unicode, regex, control,
-operators, types, and variables use 40–51 so all 12
+operators, types, variables, and subs use 40–51 so all 12
 templates in each domain are represented. The
 first real stable divergence (numeric seed 48) is preserved under
 `fixtures/findings/numeric-00000048/`. Operator seeds 41 and 48 are preserved
@@ -215,10 +219,10 @@ observations.
 
 ## Status
 
-The first P1-P3 implementation and eight domain extensions are in place.
+The first P1-P3 implementation and nine domain extensions are in place.
 The registry currently exposes `numeric`, `containers`, `signatures`, and
-`unicode`, `regex`, `control`, `operators`, `types`, and `variables`;
-`--generator=all` runs all nine. It
+`unicode`, `regex`, `control`, `operators`, `types`, `variables`, and `subs`;
+`--generator=all` runs all ten. It
 deliberately remains smaller
 than the release claim: output limits, campaign resume, engine identity,
 clustering and syntax-aware shrinking still need to land. The current fixed

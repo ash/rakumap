@@ -9,8 +9,9 @@ use RakuMap::Generator::Control;
 use RakuMap::Generator::Operators;
 use RakuMap::Generator::Types;
 use RakuMap::Generator::Variables;
+use RakuMap::Generator::Subs;
 
-our constant @GENERATORS is export = <numeric containers signatures unicode regex control operators types variables>;
+our constant @GENERATORS is export = <numeric containers signatures unicode regex control operators types variables subs>;
 
 sub generator-names(--> List:D) is export { @GENERATORS.List }
 
@@ -32,6 +33,7 @@ sub generate-case(Str:D $generator, Int:D $seed --> Hash:D) is export {
         when 'operators' { generate-operators($seed) }
         when 'types' { generate-types($seed) }
         when 'variables' { generate-variables($seed) }
+        when 'subs' { generate-subs($seed) }
         default { die "unknown generator '$generator'" }
     }
 }
