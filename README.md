@@ -84,6 +84,9 @@ lib/
   RakuMap/
     Campaign.rakumod              generation, exploration, dossier writing, replay
     Runner.rakumod                bounded compile/run of observed child engines
+    Shrink.rakumod                signature-preserving deterministic minimizer
+    Sanitizer.rakumod             sanitizer-family classification
+    Export.rakumod                classification and patch-ready exports
     Generator/
       Registry.rakumod            generator names and --generator=all dispatch
       Numeric.rakumod             deterministic numeric-v1 program generator
@@ -123,6 +126,9 @@ t/
   16-phasers-generator.rakutest   phaser determinism and template coverage
   17-concurrency-generator.rakutest bounded concurrency template coverage
   18-invalid-generator.rakutest   intentional-invalid template coverage
+  19-shrink.rakutest              signature-preserving minimization checks
+  20-sanitizer.rakutest           sanitizer classification checks
+  21-export.rakutest              classification and export-format checks
 
 fixtures/
   engines/                        small shell engines with planted behaviours
@@ -196,19 +202,20 @@ rakupp -Ilib bin/rakumap replay out/latest/findings/numeric-00001048 \
 # Resume an interrupted campaign with the same output directory:
 rakupp -Ilib bin/rakumap explore --generator=all --resume --out=out/latest
 
-# Planned commands:
-rakumap mutate t/seeds/signatures.raku --transform=container-layer \
-  --oracle=raku --candidate=/path/to/rakupp
 rakumap shrink out/findings/2026-09-09-00017
 rakumap classify out/findings/2026-09-09-00017 --as=candidate-defect
-rakumap export out/findings/2026-09-09-00017 --rakugrid=/path/to/rakugrid
-rakumap stats
+rakumap export out/findings/2026-09-09-00017 --format=rakugrid \
+  --out=out/finding.json
 ```
 
 `explore --resume` reuses atomic per-seed completion records. `campaign.json`
 records generator settings, budgets, commands and one-time engine identities;
 `clusters.tsv` groups signatures and names a representative seed. Output capture
 defaults to 65,536 bytes per stream and can be changed with `--max-output=N`.
+Replay enforces recorded engine identities unless `--relax-identity` is given.
+Shrinking accepts a reduction only when the exact oracle/candidate signature
+pair survives every configured repetition. Sanitizer-family failures are
+recorded in findings and campaign summaries.
 
 Run the test suite with Raku++:
 
@@ -263,11 +270,8 @@ The first P1-P3 implementation and fifteen domain extensions are in place.
 The registry currently exposes `numeric`, `containers`, `signatures`, and
 `unicode`, `regex`, `control`, `operators`, `types`, `variables`, `subs`,
 `methods`, `builtins`, `literals`, `phasers`, `concurrency`, and `invalid`;
-`--generator=all` runs all sixteen. It
-deliberately remains smaller
-than the release claim: output limits, campaign resume, engine identity,
-clustering and syntax-aware shrinking still need to land. The current fixed
-generator already produces replayable numeric divergences and reports every
+`--generator=all` runs all sixteen. The current fixed generators produce
+replayable divergences and report every
 oracle rejection instead of silently filtering it.
 
 See [docs/PLAN.md](docs/PLAN.md) for the phased build and release gates.

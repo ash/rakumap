@@ -3,6 +3,8 @@
 use lib $?FILE.IO.parent.parent.add('lib').Str;
 use RakuMap;
 use RakuMap::Campaign;
+use RakuMap::Shrink;
+use RakuMap::Export;
 
 sub usage() {
     say qq:to/USAGE/;
@@ -15,6 +17,11 @@ sub usage() {
                        [--seed=N] [--cases=N] [--timeout=N] [--repeat=N]
                        [--max-output=N] [--resume] [--out=DIR]
       rakumap replay DOSSIER [--oracle=PATH] [--candidate=PATH] [--timeout=N]
+                       [--relax-identity]
+      rakumap shrink DOSSIER [--oracle=PATH] [--candidate=PATH]
+                     [--timeout=N] [--repeat=N] [--budget=N]
+      rakumap classify DOSSIER --as=CLASSIFICATION
+      rakumap export DOSSIER --format=standalone|rakupp|rakugrid --out=FILE
       rakumap version
     USAGE
 }
@@ -68,8 +75,30 @@ sub MAIN(*@args) {
             my $path = %o<positionals>[0] // die 'usage: rakumap replay DOSSIER';
             my $ok = replay($path.IO, :oracle(%o<oracle> // 'raku'),
                 :candidate(%o<candidate> // 'rakupp'),
-                :timeout(int-option(%o, 'timeout', 5)));
+                :timeout(int-option(%o, 'timeout', 5)),
+                :relax-identity(so %o<relax-identity>));
             exit($ok ?? 0 !! 1);
+        }
+        when 'shrink' {
+            my $path = %o<positionals>[0] // die 'usage: rakumap shrink DOSSIER';
+            my %result = shrink-dossier($path.IO,
+                :oracle(%o<oracle> // 'raku'), :candidate(%o<candidate> // 'rakupp'),
+                :timeout(int-option(%o, 'timeout', 5)),
+                :repetitions(int-option(%o, 'repeat', 2)),
+                :budget(int-option(%o, 'budget', 200)));
+            say "shrunk {%result<original-bytes>} -> {%result<minimum-bytes>} bytes "
+              ~ "in {%result<calls>} calls";
+        }
+        when 'classify' {
+            my $path = %o<positionals>[0] // die 'usage: rakumap classify DOSSIER --as=CLASSIFICATION';
+            my $classification = %o<as> // die '--as is required';
+            say classify-dossier($path.IO, $classification).Str;
+        }
+        when 'export' {
+            my $path = %o<positionals>[0] // die 'usage: rakumap export DOSSIER --format=FORMAT --out=FILE';
+            my $format = %o<format> // die '--format is required';
+            my $destination = %o<out> // die '--out is required';
+            say export-dossier($path.IO, :$format, :out($destination.IO)).Str;
         }
         default { note "unknown command '$command'"; usage; exit 2 }
     }

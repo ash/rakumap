@@ -1,0 +1,11 @@
+use lib $?FILE.IO.parent.parent.add('lib').Str;
+use Test;
+use RakuMap::Sanitizer;
+plan 6;
+sub observation(Str $stderr) { { compile => { stderr => '' }, run => { stderr => $stderr } } }
+is sanitizer-classification(observation('ERROR: AddressSanitizer: heap-use-after-free')), 'address', 'ASan is classified';
+is sanitizer-classification(observation('UndefinedBehaviorSanitizer: signed integer overflow')), 'undefined-behavior', 'UBSan is classified';
+is sanitizer-classification(observation('ERROR: LeakSanitizer: detected memory leaks')), 'leak', 'LSan is classified';
+is sanitizer-classification(observation('WARNING: ThreadSanitizer: data race')), 'thread', 'TSan is classified';
+is sanitizer-classification(observation('WARNING: MemorySanitizer: use-of-uninitialized-value')), 'memory', 'MSan is classified';
+is sanitizer-classification(observation('ordinary exception')), 'none', 'ordinary stderr is not mislabeled';

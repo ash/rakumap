@@ -24,6 +24,9 @@
     "RakuMap::Generator::Signatures": "lib/RakuMap/Generator/Signatures.rakumod",
     "RakuMap::Generator::Unicode": "lib/RakuMap/Generator/Unicode.rakumod",
     "RakuMap::Runner": "lib/RakuMap/Runner.rakumod"
+    ,"RakuMap::Shrink": "lib/RakuMap/Shrink.rakumod"
+    ,"RakuMap::Sanitizer": "lib/RakuMap/Sanitizer.rakumod"
+    ,"RakuMap::Export": "lib/RakuMap/Export.rakumod"
   },
   "depends": [],
   "test-depends": ["Test"],

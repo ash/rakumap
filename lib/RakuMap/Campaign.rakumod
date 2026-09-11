@@ -2,6 +2,7 @@ unit module RakuMap::Campaign;
 
 use RakuMap::Generator::Registry;
 use RakuMap::Runner;
+use RakuMap::Sanitizer;
 
 sub json-escape(Str:D $s --> Str:D) {
     my $out = '';
@@ -46,6 +47,7 @@ sub finding-json(Int:D $seed, %case, Str:D $oracle, Str:D $candidate,
         '  "candidate-accepted": ' ~ (%co<accepted> ?? 'true' !! 'false'),
         '  "oracle-exit": ' ~ %oo<run><exit>,
         '  "candidate-exit": ' ~ %co<run><exit>,
+        '  "sanitizer": ' ~ json-escape(sanitizer-classification(%co)),
         '  "stability": ' ~ json-escape($stability);
     '{' ~ "\n" ~ @fields.join(",\n") ~ "\n}\n"
 }
@@ -114,7 +116,7 @@ sub explore(Str:D :$oracle = 'raku', Str:D :$candidate = 'rakupp',
       ~ '  "oracle-identity": ' ~ json-escape($oracle-id) ~ ',' ~ "\n"
       ~ '  "candidate": ' ~ json-escape($candidate) ~ ',' ~ "\n"
       ~ '  "candidate-identity": ' ~ json-escape($candidate-id) ~ "\n}");
-    my $divergent = 0; my $stable = 0; my $invalid = 0;
+    my $divergent = 0; my $stable = 0; my $invalid = 0; my $sanitizer = 0;
     my %clusters;
     my @generators = selected-generators($generator);
     for @generators -> $name {
@@ -122,8 +124,8 @@ sub explore(Str:D :$oracle = 'raku', Str:D :$candidate = 'rakupp',
             my $n = $seed + $offset; my %case = generate-case($name, $n);
             my $result = $results.add($name ~ '-' ~ $n.fmt('%08d') ~ '.tsv');
             if $resume && $result.f {
-                my ($d, $s, $i, $cluster) = $result.slurp.trim.split("\t");
-                $divergent += +$d; $stable += +$s; $invalid += +$i;
+                my ($d, $s, $i, $z, $cluster) = $result.slurp.trim.split("\t");
+                $divergent += +$d; $stable += +$s; $invalid += +$i; $sanitizer += +$z;
                 %clusters{$cluster}<count>++ if $cluster.chars;
                 %clusters{$cluster}<seed> //= $n if $cluster.chars;
                 next;
@@ -132,12 +134,14 @@ sub explore(Str:D :$oracle = 'raku', Str:D :$candidate = 'rakupp',
             write-text($source, %case<source>);
             my %oo = observe($oracle, $source, $tmp, :$timeout, :$max-output);
             my %co = observe($candidate, $source, $tmp, :$timeout, :$max-output);
+            my $has-sanitizer = sanitizer-classification(%co) ne 'none';
+            $sanitizer++ if $has-sanitizer;
             my $expects-rejection = (%case<witness><expected> // '') eq 'reject';
             my $is-invalid = !(%oo<accepted> || $expects-rejection);
             $invalid++ if $is-invalid;
             my $pair = observation-signature(%oo) ~ "\x1d" ~ observation-signature(%co);
             unless observation-signature(%oo) ne observation-signature(%co) {
-                atomic-write($result, "0\t0\t{$is-invalid.Int}\t"); next;
+                atomic-write($result, "0\t0\t{$is-invalid.Int}\t{$has-sanitizer.Int}\t"); next;
             }
             $divergent++;
             my $os = stable-observation($oracle, $source, $tmp, %oo, :$timeout, :$repetitions, :$max-output);
@@ -159,12 +163,12 @@ sub explore(Str:D :$oracle = 'raku', Str:D :$candidate = 'rakupp',
             save-observation($dir, 'oracle', %oo); save-observation($dir, 'candidate', %co);
             write-text($dir.add('oracle.signature'), observation-signature(%oo));
             write-text($dir.add('candidate.signature'), observation-signature(%co));
-            atomic-write($result, "1\t{($stability eq 'stable').Int}\t{$is-invalid.Int}\t$cluster");
+            atomic-write($result, "1\t{($stability eq 'stable').Int}\t{$is-invalid.Int}\t{$has-sanitizer.Int}\t$cluster");
             say "divergence generator=$name seed=$n $stability -> {$dir.Str}";
         }
     }
     my %summary = cases => $cases * @generators.elems, divergent => $divergent,
-        stable => $stable, oracle-invalid => $invalid;
+        stable => $stable, oracle-invalid => $invalid, sanitizer => $sanitizer;
     write-text($out.add('summary.txt'),
         join("\n", %summary.keys.sort.map({ "$_={%summary{$_}}" })));
     write-text($out.add('clusters.tsv'), "cluster\tcount\trepresentative-seed\n" ~
@@ -172,11 +176,32 @@ sub explore(Str:D :$oracle = 'raku', Str:D :$candidate = 'rakupp',
     %summary
 }
 
+sub recorded-string(IO::Path:D $json, Str:D $name --> Str) {
+    return Str unless $json.f;
+    my $prefix = '  "' ~ $name ~ '": "';
+    my $line = $json.lines.first(*.starts-with($prefix));
+    return Str unless $line.defined;
+    $line.substr($prefix.chars).subst(/ '"' ','? \s* $/, '')
+        .subst('\\n', "\n", :g).subst('\\"', '"', :g).subst('\\\\', '\\', :g)
+}
+
 sub replay(IO::Path:D $dossier, Str:D :$oracle = 'raku',
-           Str:D :$candidate = 'rakupp', Int:D :$timeout = 5 --> Bool:D) is export {
+           Str:D :$candidate = 'rakupp', Int:D :$timeout = 5,
+           Bool:D :$relax-identity = False --> Bool:D) is export {
     my $source = $dossier.add('case.raku');
     die "no case.raku in {$dossier.Str}" unless $source.f;
     my $tmp = $dossier.add('.replay'); $tmp.mkdir unless $tmp.d;
+    unless $relax-identity {
+        my $metadata = $dossier.add('finding.json');
+        my $want-oracle = recorded-string($metadata, 'oracle-identity');
+        my $want-candidate = recorded-string($metadata, 'candidate-identity');
+        my $got-oracle = engine-identity($oracle, $tmp);
+        my $got-candidate = engine-identity($candidate, $tmp);
+        die "oracle identity mismatch: recorded '$want-oracle', got '$got-oracle'"
+            if $want-oracle.defined && $want-oracle ne $got-oracle;
+        die "candidate identity mismatch: recorded '$want-candidate', got '$got-candidate'"
+            if $want-candidate.defined && $want-candidate ne $got-candidate;
+    }
     my %oo = observe($oracle, $source, $tmp, :$timeout);
     my %co = observe($candidate, $source, $tmp, :$timeout);
     my $different = observation-signature(%oo) ne observation-signature(%co);

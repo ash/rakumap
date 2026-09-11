@@ -2,7 +2,7 @@ use lib $?FILE.IO.parent.parent.add('lib').Str;
 use Test;
 use RakuMap::Campaign;
 
-plan 14;
+plan 15;
 
 my $root = $?FILE.IO.parent.parent;
 my $out = $*TMPDIR.add("rakumap-campaign-$*PID");
@@ -38,4 +38,6 @@ my %resumed = explore(
 );
 is %resumed<cases>, 2, 'resumed campaign retains its requested case count';
 is %resumed<divergent>, 2, 'resume restores completed result counts';
+dies-ok { replay($finding, :oracle($candidate), :$candidate, :timeout(2)) },
+    'replay rejects an engine identity mismatch';
 ok replay($finding, :$oracle, :$candidate, :timeout(2)), 'persisted finding reproduces';

@@ -169,7 +169,7 @@ The first planted programs exit normally, reject at compile time, loop forever,
 fork/spawn a lingering child, crash, and emit unbounded output. Each must yield
 one bounded observation and leave no process behind.
 
-### P2 — campaign and replay (implemented; replay identity enforcement pending)
+### P2 — campaign and replay (implemented)
 
 Define canonical campaign JSON: engines, generator and version, seed interval,
 budgets, comparator and normalizer versions, stability repetitions and output
@@ -202,7 +202,7 @@ The renderer owns parentheses and statement structure. The type/context model
 is deliberately approximate; its invalid rate is reported and gated. P3 is not
 a miniature implementation of Raku's type checker.
 
-### P4 — stability and clustering
+### P4 — stability and clustering (implemented)
 
 Re-run every first divergence at least three times per engine. Classify:
 
@@ -216,7 +216,7 @@ Only stable divergences enter automatic shrinking. Cluster by signature before
 shrinking so one defect does not produce ten thousand dossiers. Preserve counts
 and representative seeds for every cluster.
 
-### P5 — syntax-aware shrinking
+### P5 — signature-preserving shrinking (implemented)
 
 Numeric-v1 initially owns its own AST and reducers:
 
@@ -282,7 +282,7 @@ Suggested order:
 6. sanitizer-backed memory-safety campaigns;
 7. concurrency invariants and repeated schedules.
 
-### P8 — adjudication and export
+### P8 — adjudication and export (implemented)
 
 Classification is explicit: candidate defect, intentional divergence, oracle
 defect/suspect, unspecified/unstable, unsupported feature, duplicate, generator
