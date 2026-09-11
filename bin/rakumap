@@ -13,7 +13,7 @@ sub usage() {
       rakumap explore  [--oracle=PATH] [--candidate=PATH]
                        [--generator=NAME|all]
                        [--seed=N] [--cases=N] [--timeout=N] [--repeat=N]
-                       [--out=DIR]
+                       [--max-output=N] [--resume] [--out=DIR]
       rakumap replay DOSSIER [--oracle=PATH] [--candidate=PATH] [--timeout=N]
       rakumap version
     USAGE
@@ -24,6 +24,8 @@ sub options(@args --> Hash:D) {
     for @args -> $arg {
         if $arg.starts-with('--') && $arg.contains('=') {
             my ($key, $value) = $arg.substr(2).split('=', 2); %o{$key} = $value;
+        } elsif $arg.starts-with('--') {
+            %o{$arg.substr(2)} = True;
         } else { @positionals.push($arg) }
     }
     %o<positionals> = @positionals; %o
@@ -56,7 +58,9 @@ sub MAIN(*@args) {
                 :seed(int-option(%o, 'seed', 1)),
                 :cases(int-option(%o, 'cases', 100)),
                 :timeout(int-option(%o, 'timeout', 5)),
-                :repetitions(int-option(%o, 'repeat', 2)), :$out);
+                :repetitions(int-option(%o, 'repeat', 2)),
+                :max-output(int-option(%o, 'max-output', 65536)),
+                :resume(so %o<resume>), :$out);
             say "done: {%s<cases>} cases, {%s<divergent>} divergences, "
               ~ "{%s<stable>} stable, {%s<oracle-invalid>} oracle-invalid";
         }

@@ -17,6 +17,13 @@ sub normalize-diagnostic(Str:D $text, IO::Path:D $source --> Str:D) is export {
          .subst(/ 'at ' <-[\n]>* 'guard-' \d+ '-' \d+ /, 'at <TEMP>', :g)
 }
 
+sub engine-identity(Str:D $engine, IO::Path:D $tmp --> Str:D) is export {
+    my %version = run-guarded($engine, ['--version'], $tmp,
+        :timeout(5), :max-output(4096));
+    my $reported = (%version<stdout> ~ %version<stderr>).trim;
+    $reported.chars ?? $reported.lines[0] !! $engine
+}
+
 sub run-guarded(Str:D $engine, @args, IO::Path:D $tmp,
                 Int:D :$timeout = 5, Int:D :$max-output = 65536 --> Hash:D) is export {
     $tmp.mkdir unless $tmp.d;

@@ -2,7 +2,7 @@ use lib $?FILE.IO.parent.parent.add('lib').Str;
 use Test;
 use RakuMap::Campaign;
 
-plan 8;
+plan 14;
 
 my $root = $?FILE.IO.parent.parent;
 my $out = $*TMPDIR.add("rakumap-campaign-$*PID");
@@ -24,4 +24,18 @@ ok $finding.add('original.raku').f, 'original source is persisted';
 ok $finding.add('finding.json').f, 'machine-readable metadata is persisted';
 ok $finding.add('finding.json').slurp.contains('"stability": "stable"'),
     'metadata records stability';
+ok $out.add('campaign.json').slurp.contains('"oracle-identity"'),
+    'canonical campaign records engine identity';
+is $out.add('results').dir(test => / '.tsv' $/).elems, 2,
+    'one durable completion record is written per seed';
+ok $out.add('clusters.tsv').slurp.starts-with("cluster\tcount\trepresentative-seed"),
+    'deterministic cluster summary is written';
+ok $finding.add('finding.json').slurp.contains('"cluster-key"'),
+    'finding records its cluster key';
+my %resumed = explore(
+    :seed(70), :cases(2), :repetitions(2), :timeout(2), :resume,
+    :$oracle, :$candidate, :$out,
+);
+is %resumed<cases>, 2, 'resumed campaign retains its requested case count';
+is %resumed<divergent>, 2, 'resume restores completed result counts';
 ok replay($finding, :$oracle, :$candidate, :timeout(2)), 'persisted finding reproduces';

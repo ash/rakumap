@@ -193,6 +193,9 @@ rakupp -Ilib bin/rakumap explore --generator=containers --cases=10000 --seed=100
 rakupp -Ilib bin/rakumap replay out/latest/findings/numeric-00001048 \
   --oracle=raku --candidate=/path/to/rakupp
 
+# Resume an interrupted campaign with the same output directory:
+rakupp -Ilib bin/rakumap explore --generator=all --resume --out=out/latest
+
 # Planned commands:
 rakumap mutate t/seeds/signatures.raku --transform=container-layer \
   --oracle=raku --candidate=/path/to/rakupp
@@ -201,6 +204,11 @@ rakumap classify out/findings/2026-09-09-00017 --as=candidate-defect
 rakumap export out/findings/2026-09-09-00017 --rakugrid=/path/to/rakugrid
 rakumap stats
 ```
+
+`explore --resume` reuses atomic per-seed completion records. `campaign.json`
+records generator settings, budgets, commands and one-time engine identities;
+`clusters.tsv` groups signatures and names a representative seed. Output capture
+defaults to 65,536 bytes per stream and can be changed with `--max-output=N`.
 
 Run the test suite with Raku++:
 

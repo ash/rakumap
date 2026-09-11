@@ -28,6 +28,7 @@ sub save-observation(IO::Path:D $dir, Str:D $name, %o) {
 }
 
 sub finding-json(Int:D $seed, %case, Str:D $oracle, Str:D $candidate,
+                 Str:D $oracle-id, Str:D $candidate-id, Str:D $cluster,
                  %oo, %co, Str:D $stability --> Str:D) {
     my %w = %case<witness>;
     my @fields = '  "format": 1',
@@ -38,6 +39,9 @@ sub finding-json(Int:D $seed, %case, Str:D $oracle, Str:D $candidate,
         '  "expression": ' ~ json-escape(%w<expression>),
         '  "oracle": ' ~ json-escape($oracle),
         '  "candidate": ' ~ json-escape($candidate),
+        '  "oracle-identity": ' ~ json-escape($oracle-id),
+        '  "candidate-identity": ' ~ json-escape($candidate-id),
+        '  "cluster-key": ' ~ json-escape($cluster),
         '  "oracle-accepted": ' ~ (%oo<accepted> ?? 'true' !! 'false'),
         '  "candidate-accepted": ' ~ (%co<accepted> ?? 'true' !! 'false'),
         '  "oracle-exit": ' ~ %oo<run><exit>,
@@ -48,11 +52,26 @@ sub finding-json(Int:D $seed, %case, Str:D $oracle, Str:D $candidate,
 
 sub stable-observation(Str:D $engine, IO::Path:D $source, IO::Path:D $tmp,
                        %first, Int:D :$timeout = 5,
-                       Int:D :$repetitions = 2 --> Bool:D) {
+                       Int:D :$repetitions = 2,
+                       Int:D :$max-output = 65536 --> Bool:D) {
     my $want = observation-signature(%first);
     for 2 .. $repetitions { return False if observation-signature(
-        observe($engine, $source, $tmp, :$timeout)) ne $want }
+        observe($engine, $source, $tmp, :$timeout, :$max-output)) ne $want }
     True
+}
+
+sub signature-key(Str:D $generator, Str:D $template, Str:D $pair --> Str:D) {
+    my Int $hash = 5381;
+    for ($generator ~ "\x1f" ~ $template ~ "\x1f" ~ $pair).ords -> $ord {
+        $hash = (($hash * 33) + $ord) % 4294967291;
+    }
+    $generator ~ '-' ~ $template ~ '-' ~ $hash.fmt('%08x')
+}
+
+sub atomic-write(IO::Path:D $path, Str:D $text) {
+    my $temporary = $path.parent.add($path.basename ~ '.tmp-' ~ $*PID);
+    write-text($temporary, $text);
+    $temporary.rename($path);
 }
 
 sub generate-cases(Str:D :$generator = 'numeric', Int:D :$seed = 1,
@@ -74,38 +93,73 @@ sub generate-cases(Str:D :$generator = 'numeric', Int:D :$seed = 1,
 sub explore(Str:D :$oracle = 'raku', Str:D :$candidate = 'rakupp',
             Str:D :$generator = 'numeric',
             Int:D :$seed = 1, Int:D :$cases = 100, Int:D :$timeout = 5,
-            Int:D :$repetitions = 2, IO::Path:D :$out! --> Hash:D) is export {
+            Int:D :$repetitions = 2, Int:D :$max-output = 65536,
+            Bool:D :$resume = False, IO::Path:D :$out! --> Hash:D) is export {
     $out.mkdir unless $out.d;
     my $tmp = $out.add('tmp'); my $findings = $out.add('findings');
+    my $results = $out.add('results');
     $tmp.mkdir unless $tmp.d; $findings.mkdir unless $findings.d;
+    $results.mkdir unless $results.d;
+    my $oracle-id = engine-identity($oracle, $tmp);
+    my $candidate-id = engine-identity($candidate, $tmp);
+    atomic-write($out.add('campaign.json'), '{' ~ "\n"
+      ~ '  "format": 1,' ~ "\n"
+      ~ '  "generator": ' ~ json-escape($generator) ~ ',' ~ "\n"
+      ~ '  "seed": ' ~ $seed ~ ',' ~ "\n"
+      ~ '  "cases": ' ~ $cases ~ ',' ~ "\n"
+      ~ '  "timeout": ' ~ $timeout ~ ',' ~ "\n"
+      ~ '  "repetitions": ' ~ $repetitions ~ ',' ~ "\n"
+      ~ '  "max-output": ' ~ $max-output ~ ',' ~ "\n"
+      ~ '  "oracle": ' ~ json-escape($oracle) ~ ',' ~ "\n"
+      ~ '  "oracle-identity": ' ~ json-escape($oracle-id) ~ ',' ~ "\n"
+      ~ '  "candidate": ' ~ json-escape($candidate) ~ ',' ~ "\n"
+      ~ '  "candidate-identity": ' ~ json-escape($candidate-id) ~ "\n}");
     my $divergent = 0; my $stable = 0; my $invalid = 0;
+    my %clusters;
     my @generators = selected-generators($generator);
     for @generators -> $name {
         for ^$cases -> $offset {
             my $n = $seed + $offset; my %case = generate-case($name, $n);
+            my $result = $results.add($name ~ '-' ~ $n.fmt('%08d') ~ '.tsv');
+            if $resume && $result.f {
+                my ($d, $s, $i, $cluster) = $result.slurp.trim.split("\t");
+                $divergent += +$d; $stable += +$s; $invalid += +$i;
+                %clusters{$cluster}<count>++ if $cluster.chars;
+                %clusters{$cluster}<seed> //= $n if $cluster.chars;
+                next;
+            }
             my $source = $tmp.add($name ~ '-' ~ $n ~ '.raku');
             write-text($source, %case<source>);
-            my %oo = observe($oracle, $source, $tmp, :$timeout);
-            my %co = observe($candidate, $source, $tmp, :$timeout);
+            my %oo = observe($oracle, $source, $tmp, :$timeout, :$max-output);
+            my %co = observe($candidate, $source, $tmp, :$timeout, :$max-output);
             my $expects-rejection = (%case<witness><expected> // '') eq 'reject';
-            $invalid++ unless %oo<accepted> || $expects-rejection;
-            next if observation-signature(%oo) eq observation-signature(%co);
+            my $is-invalid = !(%oo<accepted> || $expects-rejection);
+            $invalid++ if $is-invalid;
+            my $pair = observation-signature(%oo) ~ "\x1d" ~ observation-signature(%co);
+            unless observation-signature(%oo) ne observation-signature(%co) {
+                atomic-write($result, "0\t0\t{$is-invalid.Int}\t"); next;
+            }
             $divergent++;
-            my $os = stable-observation($oracle, $source, $tmp, %oo, :$timeout, :$repetitions);
-            my $cs = stable-observation($candidate, $source, $tmp, %co, :$timeout, :$repetitions);
+            my $os = stable-observation($oracle, $source, $tmp, %oo, :$timeout, :$repetitions, :$max-output);
+            my $cs = stable-observation($candidate, $source, $tmp, %co, :$timeout, :$repetitions, :$max-output);
             my $stability = $os && $cs ?? 'stable'
                 !! !$os && !$cs ?? 'both-unstable' !! !$os ?? 'oracle-unstable'
                 !! 'candidate-unstable';
             $stable++ if $stability eq 'stable';
+            my $cluster = signature-key($name,
+                (%case<witness><template> // 'generated').Str, $pair);
+            %clusters{$cluster}<count>++;
+            %clusters{$cluster}<seed> //= $n;
             my $dir = $findings.add($name ~ '-' ~ $n.fmt('%08d'));
             $dir.mkdir unless $dir.d;
             write-text($dir.add('case.raku'), %case<source>);
             write-text($dir.add('original.raku'), %case<source>);
             $dir.add('finding.json').spurt(finding-json($n, %case, $oracle,
-                $candidate, %oo, %co, $stability));
+                $candidate, $oracle-id, $candidate-id, $cluster, %oo, %co, $stability));
             save-observation($dir, 'oracle', %oo); save-observation($dir, 'candidate', %co);
             write-text($dir.add('oracle.signature'), observation-signature(%oo));
             write-text($dir.add('candidate.signature'), observation-signature(%co));
+            atomic-write($result, "1\t{($stability eq 'stable').Int}\t{$is-invalid.Int}\t$cluster");
             say "divergence generator=$name seed=$n $stability -> {$dir.Str}";
         }
     }
@@ -113,6 +167,8 @@ sub explore(Str:D :$oracle = 'raku', Str:D :$candidate = 'rakupp',
         stable => $stable, oracle-invalid => $invalid;
     write-text($out.add('summary.txt'),
         join("\n", %summary.keys.sort.map({ "$_={%summary{$_}}" })));
+    write-text($out.add('clusters.tsv'), "cluster\tcount\trepresentative-seed\n" ~
+        %clusters.keys.sort.map({ "$_\t{%clusters{$_}<count>}\t{%clusters{$_}<seed>}" }).join("\n"));
     %summary
 }
 

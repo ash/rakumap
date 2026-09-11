@@ -169,7 +169,7 @@ The first planted programs exit normally, reject at compile time, loop forever,
 fork/spawn a lingering child, crash, and emit unbounded output. Each must yield
 one bounded observation and leave no process behind.
 
-### P2 — campaign and replay (initial implementation)
+### P2 — campaign and replay (implemented; replay identity enforcement pending)
 
 Define canonical campaign JSON: engines, generator and version, seed interval,
 budgets, comparator and normalizer versions, stability repetitions and output
@@ -182,6 +182,10 @@ finish out of order; dossier identities and final summaries remain deterministic
 `rakumap replay DOSSIER` runs the exact recorded source and settings, verifies
 engine identity unless explicitly relaxed, and reports whether the original
 signature reproduced.
+
+Campaign metadata, one-time engine identities, atomic per-seed completion
+records, deterministic resume, bounded output capture, normalized rejection
+diagnostics, and cluster summaries are implemented.
 
 ### P3 — numeric-v1 generator (initial implementation)
 
