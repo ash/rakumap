@@ -1,0 +1,4 @@
+TYPE	List
+RAKU	$("Array", "Int", [7, 8], Bool::True)
+STR	Array Int 7 8 True
+BOOL	True

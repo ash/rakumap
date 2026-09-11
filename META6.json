@@ -10,6 +10,7 @@
     "RakuMap::Generator::Control": "lib/RakuMap/Generator/Control.rakumod",
     "RakuMap::Generator::Numeric": "lib/RakuMap/Generator/Numeric.rakumod",
     "RakuMap::Generator::Operators": "lib/RakuMap/Generator/Operators.rakumod",
+    "RakuMap::Generator::Types": "lib/RakuMap/Generator/Types.rakumod",
     "RakuMap::Generator::Registry": "lib/RakuMap/Generator/Registry.rakumod",
     "RakuMap::Generator::Regex": "lib/RakuMap/Generator/Regex.rakumod",
     "RakuMap::Generator::Signatures": "lib/RakuMap/Generator/Signatures.rakumod",

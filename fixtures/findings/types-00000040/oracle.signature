@@ -1,0 +1,5 @@
+acceptaccepted0completed0TYPE	List
+RAKU	$("Array[Int]", "Int", [7, 8], Bool::True)
+STR	Array[Int] Int 7 8 True
+BOOL	True
+
