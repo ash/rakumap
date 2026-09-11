@@ -1,0 +1,22 @@
+use lib $?FILE.IO.parent.parent.add('lib').Str;
+use Test;
+use RakuMap::Generator::Literals;
+use RakuMap::Generator::Registry;
+plan 9;
+my %first = generate-literals(40); my %again = generate-case('literals', 40);
+is %first<source>, %again<source>, 'registry preserves deterministic source';
+is-deeply %first<witness>, %again<witness>, 'registry preserves generation witness';
+is %first<witness><generator>, 'literals-v1', 'domain version is recorded';
+is %first<witness><confidence>, 'C', 'restricted generator reports confidence C';
+ok %first<source>.contains('say "TYPE\t"'), 'observation envelope uses a real tab escape';
+ok !%first<source>.contains('use v6.d'), 'generated source has no language pragma';
+my %templates;
+for 0 .. 119 -> $seed {
+    my %case = generate-literals($seed); %templates{%case<witness><template>} = True;
+    my $source = $*TMPDIR.add("rakumap-literals-$*PID-$seed.raku"); $source.spurt(%case<source>);
+    my $compile = run $*EXECUTABLE, '-c', $source.Str, :out, :err;
+    die "seed $seed did not compile" if $compile.exitcode; $source.unlink;
+}
+is %templates.elems, 12, 'seed sweep reaches every literal template';
+lives-ok { generate-case('literals', 999) }, 'arbitrary seed generates successfully';
+dies-ok { selected-generators('literal') }, 'category name is exact';

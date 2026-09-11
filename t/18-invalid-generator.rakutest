@@ -1,0 +1,17 @@
+use lib $?FILE.IO.parent.parent.add('lib').Str;
+use Test;
+use RakuMap::Generator::Invalid;
+use RakuMap::Generator::Registry;
+plan 9;
+my %first = generate-invalid(40); my %again = generate-case('invalid', 40);
+is %first<source>, %again<source>, 'registry preserves deterministic source';
+is-deeply %first<witness>, %again<witness>, 'registry preserves generation witness';
+is %first<witness><generator>, 'invalid-v1', 'domain version is recorded';
+is %first<witness><confidence>, 'I', 'intentional-invalid confidence is recorded';
+is %first<witness><expected>, 'reject', 'expected rejection is explicit';
+ok !%first<source>.contains('use v6.d'), 'generated source has no language pragma';
+my %templates;
+for 0 .. 119 -> $seed { my %case = generate-invalid($seed); %templates{%case<witness><template>} = True }
+is %templates.elems, 12, 'seed sweep reaches every invalid template';
+lives-ok { generate-case('invalid', 999) }, 'arbitrary seed generates successfully';
+dies-ok { selected-generators('diagnostics') }, 'category name is exact';

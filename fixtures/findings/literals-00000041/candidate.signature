@@ -1,0 +1,5 @@
+acceptaccepted0completed0TYPE	List
+RAKU	$(Bool::True, Bool::False, Nil, Any, Bool::False)
+STR	True False   False
+BOOL	True
+

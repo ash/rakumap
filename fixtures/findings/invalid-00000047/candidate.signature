@@ -1,0 +1,4 @@
+acceptaccepted0completed1Undefined routine 'else'
+  in block <unit> at /var/folders/8y/kz8l_x2x63x5knxw5bpx16m40000gn/T/tmp.zIohPeUCQe/campaign/tmp/invalid-47.raku line 1
+      1 | else { say 1 }
+FalseFalse

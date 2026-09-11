@@ -10,8 +10,14 @@ use RakuMap::Generator::Operators;
 use RakuMap::Generator::Types;
 use RakuMap::Generator::Variables;
 use RakuMap::Generator::Subs;
+use RakuMap::Generator::Methods;
+use RakuMap::Generator::Builtins;
+use RakuMap::Generator::Literals;
+use RakuMap::Generator::Phasers;
+use RakuMap::Generator::Concurrency;
+use RakuMap::Generator::Invalid;
 
-our constant @GENERATORS is export = <numeric containers signatures unicode regex control operators types variables subs>;
+our constant @GENERATORS is export = <numeric containers signatures unicode regex control operators types variables subs methods builtins literals phasers concurrency invalid>;
 
 sub generator-names(--> List:D) is export { @GENERATORS.List }
 
@@ -34,6 +40,12 @@ sub generate-case(Str:D $generator, Int:D $seed --> Hash:D) is export {
         when 'types' { generate-types($seed) }
         when 'variables' { generate-variables($seed) }
         when 'subs' { generate-subs($seed) }
+        when 'methods' { generate-methods($seed) }
+        when 'builtins' { generate-builtins($seed) }
+        when 'literals' { generate-literals($seed) }
+        when 'phasers' { generate-phasers($seed) }
+        when 'concurrency' { generate-concurrency($seed) }
+        when 'invalid' { generate-invalid($seed) }
         default { die "unknown generator '$generator'" }
     }
 }

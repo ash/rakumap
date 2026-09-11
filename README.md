@@ -96,6 +96,12 @@ lib/
       Types.rakumod               deterministic types-v1 program generator
       Variables.rakumod           deterministic variables-v1 program generator
       Subs.rakumod                deterministic subs-v1 program generator
+      Methods.rakumod             deterministic methods-v1 program generator
+      Builtins.rakumod            deterministic builtins-v1 program generator
+      Literals.rakumod            deterministic literals-v1 program generator
+      Phasers.rakumod             deterministic phasers-v1 program generator
+      Concurrency.rakumod         bounded concurrency-v1 program generator
+      Invalid.rakumod             intentional invalid-v1 diagnostic generator
 
 t/
   00-load.rakutest                public module/version smoke test
@@ -111,6 +117,12 @@ t/
   10-types-generator.rakutest     type-system determinism and template coverage
   11-variables-generator.rakutest variable and binding template coverage
   12-subs-generator.rakutest      subroutine determinism and template coverage
+  13-methods-generator.rakutest   method determinism and template coverage
+  14-builtins-generator.rakutest  builtin determinism and template coverage
+  15-literals-generator.rakutest  literal determinism and template coverage
+  16-phasers-generator.rakutest   phaser determinism and template coverage
+  17-concurrency-generator.rakutest bounded concurrency template coverage
+  18-invalid-generator.rakutest   intentional-invalid template coverage
 
 fixtures/
   engines/                        small shell engines with planted behaviours
@@ -125,11 +137,21 @@ fixtures/
     types-v1/                     committed type-system programs for seeds 40–51
     variables-v1/                 committed variable programs for seeds 40–51
     subs-v1/                      committed subroutine programs for seeds 40–51
+    methods-v1/                   committed method programs for seeds 40–51
+    builtins-v1/                  committed builtin programs for seeds 40–51
+    literals-v1/                  committed literal programs for seeds 40–51
+    phasers-v1/                   committed phaser programs for seeds 40–51
+    concurrency-v1/               committed bounded concurrency programs for seeds 40–51
+    invalid-v1/                   committed rejected programs for seeds 40–51
   findings/
     numeric-00000048/             first preserved real differential finding
     operators-00000041/           preserved junction-output difference
     operators-00000048/           preserved reduction-result difference
     types-00000040/               preserved typed-array-name difference
+    literals-00000040/            preserved Pair rendering difference
+    literals-00000041/            preserved Nil/Any warning difference
+    literals-00000047/            preserved Version rendering difference
+    invalid-00000040..51/         preserved normalized diagnostic differences
 
 docs/
   PLAN.md                         architecture, invariants, phases and release gates
@@ -208,21 +230,32 @@ Fixed corpora are checked in under `fixtures/generated/numeric-v1/`,
 `fixtures/generated/unicode-v1/`, `fixtures/generated/regex-v1/`,
 `fixtures/generated/control-v1/`, `fixtures/generated/operators-v1/`, and
 `fixtures/generated/types-v1/`, `fixtures/generated/variables-v1/`, and
-`fixtures/generated/subs-v1/`. The
+`fixtures/generated/subs-v1/`, `fixtures/generated/methods-v1/`,
+`fixtures/generated/builtins-v1/`, `fixtures/generated/literals-v1/`,
+`fixtures/generated/phasers-v1/`, `fixtures/generated/concurrency-v1/`, and
+`fixtures/generated/invalid-v1/`. The
 numeric and container sets use seeds 40–49; signatures, Unicode, regex, control,
-operators, types, variables, and subs use 40–51 so all 12
+operators, types, variables, subs, methods, builtins, literals, phasers, and
+concurrency and invalid diagnostics use 40–51 so all 12
 templates in each domain are represented. The
 first real stable divergence (numeric seed 48) is preserved under
 `fixtures/findings/numeric-00000048/`. Operator seeds 41 and 48 are preserved
-beside it, as is type seed 40. Each dossier contains both engines' raw
-observations.
+beside it, as is type seed 40. Literal seeds 40, 41, and 47 capture Pair,
+warning, and Version-rendering differences. Each dossier contains both engines'
+raw observations.
+
+Intentional-invalid cases carry confidence `I` and an explicit expected
+rejection, so their oracle rejections are not counted as generator debt.
+Rejected observations compare normalized diagnostics while dossiers retain the
+raw streams. Per-stream capture is bounded and records truncation.
 
 ## Status
 
-The first P1-P3 implementation and nine domain extensions are in place.
+The first P1-P3 implementation and fifteen domain extensions are in place.
 The registry currently exposes `numeric`, `containers`, `signatures`, and
-`unicode`, `regex`, `control`, `operators`, `types`, `variables`, and `subs`;
-`--generator=all` runs all ten. It
+`unicode`, `regex`, `control`, `operators`, `types`, `variables`, `subs`,
+`methods`, `builtins`, `literals`, `phasers`, `concurrency`, and `invalid`;
+`--generator=all` runs all sixteen. It
 deliberately remains smaller
 than the release claim: output limits, campaign resume, engine identity,
 clustering and syntax-aware shrinking still need to land. The current fixed

@@ -1,0 +1,12 @@
+rejectrejected1not-run-1===SORRY!===
+Null regex not allowed. Please use .comb if you wanted to produce a
+sequence of characters from a string.
+at <SOURCE>:1
+------> my $value = rx/ [ <HERE>/;
+Unable to parse expression in metachar:sym<[ ]>; couldn't find final ']' (corresponding starter was at line 1)
+at <SOURCE>:1
+------> my $value = rx/ [ <HERE>/;
+    expecting any of:
+        infix stopper
+
+FalseFalse

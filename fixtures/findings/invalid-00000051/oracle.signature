@@ -1,0 +1,7 @@
+rejectrejected1not-run-1===SORRY!=== Error while compiling <SOURCE>
+Redeclaration of symbol '$x'.
+at <SOURCE>:1
+------> sub f($x, $x<HERE>) { };
+    expecting any of:
+        shape declaration
+FalseFalse

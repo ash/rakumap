@@ -1,0 +1,15 @@
+{
+  "format": 1,
+  "generator": "invalid-v1",
+  "seed": 48,
+  "confidence": "I",
+  "context": "diagnostic",
+  "expression": "malformed-pair",
+  "oracle": "/usr/local/bin/raku",
+  "candidate": "/tmp/rakupp-review-build2/rakupp",
+  "oracle-accepted": false,
+  "candidate-accepted": true,
+  "oracle-exit": -1,
+  "candidate-exit": 0,
+  "stability": "stable"
+}

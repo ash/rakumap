@@ -1,0 +1,11 @@
+===SORRY!===
+Null regex not allowed. Please use .comb if you wanted to produce a
+sequence of characters from a string.
+at /var/folders/8y/kz8l_x2x63x5knxw5bpx16m40000gn/T/tmp.zIohPeUCQe/campaign/tmp/invalid-50.raku:1
+------> my $value = rx/ [ <HERE>/;
+Unable to parse expression in metachar:sym<[ ]>; couldn't find final ']' (corresponding starter was at line 1)
+at /var/folders/8y/kz8l_x2x63x5knxw5bpx16m40000gn/T/tmp.zIohPeUCQe/campaign/tmp/invalid-50.raku:1
+------> my $value = rx/ [ <HERE>/;
+    expecting any of:
+        infix stopper
+

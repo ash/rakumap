@@ -1,0 +1,1 @@
+if True { say 1;

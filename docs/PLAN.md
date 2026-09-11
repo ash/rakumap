@@ -259,7 +259,10 @@ oracle lead, not automatically a candidate failure.
 
 Status: the shared registry plus initial `containers-v1`, `signatures-v1`,
 `unicode-v1`, `regex-v1`, bounded `control-v1`, `operators-v1`, `types-v1`, and
-`variables-v1`, and `subs-v1` generators are implemented.
+`variables-v1`, `subs-v1`, `methods-v1`, `builtins-v1`, `literals-v1`,
+`phasers-v1`, and bounded deterministic `concurrency-v1` generators are
+implemented. `invalid-v1` adds intentional rejection and normalized diagnostic
+comparison.
 
 Add one domain per release, each with its own validity model, comparators,
 reducers and measurable invalid-rate ceiling. Do not build one universal Raku

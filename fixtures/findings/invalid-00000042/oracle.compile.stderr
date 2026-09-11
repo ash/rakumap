@@ -1,0 +1,4 @@
+===SORRY!=== Error while compiling /var/folders/8y/kz8l_x2x63x5knxw5bpx16m40000gn/T/tmp.zIohPeUCQe/campaign/tmp/invalid-42.raku
+Unable to parse expression in parenthesized expression; couldn't find final ')' (corresponding starter was at line 1)
+at /var/folders/8y/kz8l_x2x63x5knxw5bpx16m40000gn/T/tmp.zIohPeUCQe/campaign/tmp/invalid-42.raku:2
+------> <BOL><HERE><EOL>

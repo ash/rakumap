@@ -1,0 +1,8 @@
+rejectrejected1not-run-1===SORRY!=== Error while compiling <SOURCE>
+Unable to parse expression in double quotes; couldn't find final '"' (corresponding starter was at line 1)
+at <SOURCE>:2
+------> <BOL><HERE><EOL>
+    expecting any of:
+        double quotes
+        term
+FalseFalse

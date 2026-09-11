@@ -1,0 +1,15 @@
+{
+  "format": 1,
+  "generator": "literals-v1",
+  "seed": 47,
+  "confidence": "C",
+  "context": "literal",
+  "expression": "8",
+  "oracle": "/usr/local/bin/raku",
+  "candidate": "/tmp/rakupp-review-build2/rakupp",
+  "oracle-accepted": true,
+  "candidate-accepted": true,
+  "oracle-exit": 0,
+  "candidate-exit": 0,
+  "stability": "stable"
+}

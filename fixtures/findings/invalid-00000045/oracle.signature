@@ -1,0 +1,5 @@
+rejectrejected1not-run-1===SORRY!=== Error while compiling <SOURCE>
+Missing block
+at <SOURCE>:1
+------> class C { method<HERE> 42() { } }
+FalseFalse

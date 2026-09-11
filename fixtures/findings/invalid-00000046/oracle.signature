@@ -1,0 +1,5 @@
+rejectrejected1not-run-1===SORRY!=== Error while compiling <SOURCE>
+Malformed my
+at <SOURCE>:1
+------> my<HERE> ?value = 1;
+FalseFalse

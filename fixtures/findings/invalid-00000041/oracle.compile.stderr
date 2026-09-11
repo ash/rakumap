@@ -1,0 +1,4 @@
+===SORRY!=== Error while compiling /var/folders/8y/kz8l_x2x63x5knxw5bpx16m40000gn/T/tmp.zIohPeUCQe/campaign/tmp/invalid-41.raku
+Radix 1 out of range (allowed: 2..36)
+at /var/folders/8y/kz8l_x2x63x5knxw5bpx16m40000gn/T/tmp.zIohPeUCQe/campaign/tmp/invalid-41.raku:1
+------> my $value = :1<2><HERE>;

@@ -1,0 +1,11 @@
+===SORRY!=== Error while compiling /var/folders/8y/kz8l_x2x63x5knxw5bpx16m40000gn/T/tmp.zIohPeUCQe/campaign/tmp/invalid-40.raku
+Two terms in a row
+at /var/folders/8y/kz8l_x2x63x5knxw5bpx16m40000gn/T/tmp.zIohPeUCQe/campaign/tmp/invalid-40.raku:1
+------> my $value = 1<HERE> 2;
+    expecting any of:
+        infix
+        infix stopper
+        postfix
+        statement end
+        statement modifier
+        statement modifier loop

@@ -1,0 +1,4 @@
+TYPE	List
+RAKU	$(v1.2.3, v1.2.4, v2.0.0, Bool::True)
+STR	1.2.3 1.2.4 2.0.0 True
+BOOL	True

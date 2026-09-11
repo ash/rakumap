@@ -1,0 +1,5 @@
+acceptaccepted0completed0TYPE	List
+RAKU	$(:answer(7), :enabled(Bool::True), :hidden(Bool::False), :count(8))
+STR	answer	7 enabled	True hidden	False count	8
+BOOL	True
+

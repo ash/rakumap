@@ -1,0 +1,5 @@
+Use of Nil in string context
+  in code  at /var/folders/8y/kz8l_x2x63x5knxw5bpx16m40000gn/T/tmp.VOCHLKoi3O/campaign/tmp/literals-41.raku line 3
+Use of uninitialized value of type Any in string context.
+Methods .^name, .raku, .gist, or .say can be used to stringify it to something meaningful.
+  in code  at /var/folders/8y/kz8l_x2x63x5knxw5bpx16m40000gn/T/tmp.VOCHLKoi3O/campaign/tmp/literals-41.raku line 3

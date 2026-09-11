@@ -2,7 +2,7 @@ use lib $?FILE.IO.parent.parent.add('lib').Str;
 use Test;
 use RakuMap::Runner;
 
-plan 7;
+plan 11;
 
 my $root = $?FILE.IO.parent.parent;
 my $source = $*TMPDIR.add("rakumap-runner-$*PID.raku");
@@ -16,9 +16,17 @@ is %accepted<run><stdout>, "A\n", 'stdout is preserved';
 my %rejected = observe($root.add('fixtures/engines/reject.sh').absolute.Str, $source, $*TMPDIR, :timeout(2));
 is %rejected<compile><status>, 'rejected', 'compile rejection is classified';
 ok %rejected<compile><stderr>.contains('planted rejection'), 'compile stderr is preserved';
+ok %rejected<diagnostic>.contains('planted rejection'), 'rejection diagnostic is normalized';
+isnt observation-signature(%accepted), observation-signature(%rejected),
+    'acceptance and rejection have distinct signatures';
 
 my %hung = run-guarded($root.add('fixtures/engines/hang.sh').absolute.Str, [], $*TMPDIR, :timeout(1));
 is %hung<status>, 'timeout', 'wall timeout is classified';
 ok %hung<duration-ms> < 5000, 'timeout returns promptly';
+
+my %capped = run-guarded('/usr/bin/printf', ['123456789'], $*TMPDIR,
+    :timeout(2), :max-output(4));
+is %capped<stdout>, '1234', 'captured output is bounded';
+ok %capped<stdout-truncated>, 'output truncation is recorded';
 
 $source.unlink;

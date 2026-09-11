@@ -1,0 +1,7 @@
+rejectrejected1not-run-1===SORRY!=== Error while compiling <SOURCE>
+Malformed initializer
+at <SOURCE>:1
+------> my $value = :<HERE>;
+    expecting any of:
+        colon pair
+FalseFalse

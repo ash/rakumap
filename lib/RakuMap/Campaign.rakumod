@@ -87,7 +87,8 @@ sub explore(Str:D :$oracle = 'raku', Str:D :$candidate = 'rakupp',
             write-text($source, %case<source>);
             my %oo = observe($oracle, $source, $tmp, :$timeout);
             my %co = observe($candidate, $source, $tmp, :$timeout);
-            $invalid++ unless %oo<accepted>;
+            my $expects-rejection = (%case<witness><expected> // '') eq 'reject';
+            $invalid++ unless %oo<accepted> || $expects-rejection;
             next if observation-signature(%oo) eq observation-signature(%co);
             $divergent++;
             my $os = stable-observation($oracle, $source, $tmp, %oo, :$timeout, :$repetitions);

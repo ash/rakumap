@@ -1,0 +1,8 @@
+rejectrejected1not-run-1===SORRY!=== Error while compiling <SOURCE>
+Can't use unknown trait 'is' -> 'definitely-not-a-trait' in sub declaration.
+at <SOURCE>:1
+    expecting any of:
+        rw raw default DEPRECATED inlinable onlystar export leading_docs
+        trailing_docs revision-gated implementation-detail hidden-from-backtrace
+        hidden-from-USAGE pure nodal equiv tighter looser assoc prec
+FalseFalse

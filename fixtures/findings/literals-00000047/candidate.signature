@@ -1,0 +1,5 @@
+acceptaccepted0completed0TYPE	List
+RAKU	$("1.2.3", "1.2.4", "2.0.0", Bool::True)
+STR	1.2.3 1.2.4 2.0.0 True
+BOOL	True
+

@@ -1,0 +1,4 @@
+===SORRY!=== Error while compiling /var/folders/8y/kz8l_x2x63x5knxw5bpx16m40000gn/T/tmp.zIohPeUCQe/campaign/tmp/invalid-45.raku
+Missing block
+at /var/folders/8y/kz8l_x2x63x5knxw5bpx16m40000gn/T/tmp.zIohPeUCQe/campaign/tmp/invalid-45.raku:1
+------> class C { method<HERE> 42() { } }

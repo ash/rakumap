@@ -1,0 +1,5 @@
+rejectrejected1not-run-1===SORRY!=== Error while compiling <SOURCE>
+Radix 1 out of range (allowed: 2..36)
+at <SOURCE>:1
+------> my $value = :1<2><HERE>;
+FalseFalse
