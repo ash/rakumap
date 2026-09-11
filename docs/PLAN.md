@@ -218,6 +218,10 @@ and representative seeds for every cluster.
 
 ### P5 — signature-preserving shrinking (implemented)
 
+Stable findings are clustered before automatic deterministic shrinking. The
+campaign records the strategy and budget, retains `original.raku`, and replaces
+`case.raku` only when the exact signature pair survives every repetition.
+
 Numeric-v1 initially owns its own AST and reducers:
 
 - delete statements and unused declarations;

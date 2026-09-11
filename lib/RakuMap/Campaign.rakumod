@@ -3,6 +3,7 @@ unit module RakuMap::Campaign;
 use RakuMap::Generator::Registry;
 use RakuMap::Runner;
 use RakuMap::Sanitizer;
+use RakuMap::Shrink;
 
 sub json-escape(Str:D $s --> Str:D) {
     my $out = '';
@@ -96,7 +97,8 @@ sub explore(Str:D :$oracle = 'raku', Str:D :$candidate = 'rakupp',
             Str:D :$generator = 'numeric',
             Int:D :$seed = 1, Int:D :$cases = 100, Int:D :$timeout = 5,
             Int:D :$repetitions = 2, Int:D :$max-output = 65536,
-            Bool:D :$resume = False, IO::Path:D :$out! --> Hash:D) is export {
+            Bool:D :$resume = False, Bool:D :$shrink = True,
+            Int:D :$shrink-budget = 200, IO::Path:D :$out! --> Hash:D) is export {
     $out.mkdir unless $out.d;
     my $tmp = $out.add('tmp'); my $findings = $out.add('findings');
     my $results = $out.add('results');
@@ -112,6 +114,8 @@ sub explore(Str:D :$oracle = 'raku', Str:D :$candidate = 'rakupp',
       ~ '  "timeout": ' ~ $timeout ~ ',' ~ "\n"
       ~ '  "repetitions": ' ~ $repetitions ~ ',' ~ "\n"
       ~ '  "max-output": ' ~ $max-output ~ ',' ~ "\n"
+      ~ '  "shrink": ' ~ ($shrink ?? 'true' !! 'false') ~ ',' ~ "\n"
+      ~ '  "shrink-budget": ' ~ $shrink-budget ~ ',' ~ "\n"
       ~ '  "oracle": ' ~ json-escape($oracle) ~ ',' ~ "\n"
       ~ '  "oracle-identity": ' ~ json-escape($oracle-id) ~ ',' ~ "\n"
       ~ '  "candidate": ' ~ json-escape($candidate) ~ ',' ~ "\n"
@@ -163,6 +167,10 @@ sub explore(Str:D :$oracle = 'raku', Str:D :$candidate = 'rakupp',
             save-observation($dir, 'oracle', %oo); save-observation($dir, 'candidate', %co);
             write-text($dir.add('oracle.signature'), observation-signature(%oo));
             write-text($dir.add('candidate.signature'), observation-signature(%co));
+            if $shrink && $stability eq 'stable' {
+                shrink-dossier($dir, :$oracle, :$candidate, :$timeout,
+                    :$repetitions, :$max-output, :budget($shrink-budget));
+            }
             atomic-write($result, "1\t{($stability eq 'stable').Int}\t{$is-invalid.Int}\t{$has-sanitizer.Int}\t$cluster");
             say "divergence generator=$name seed=$n $stability -> {$dir.Str}";
         }

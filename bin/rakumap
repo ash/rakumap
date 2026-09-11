@@ -16,6 +16,7 @@ sub usage() {
                        [--generator=NAME|all]
                        [--seed=N] [--cases=N] [--timeout=N] [--repeat=N]
                        [--max-output=N] [--resume] [--out=DIR]
+                       [--shrink-budget=N] [--no-shrink]
       rakumap replay DOSSIER [--oracle=PATH] [--candidate=PATH] [--timeout=N]
                        [--relax-identity]
       rakumap shrink DOSSIER [--oracle=PATH] [--candidate=PATH]
@@ -67,7 +68,8 @@ sub MAIN(*@args) {
                 :timeout(int-option(%o, 'timeout', 5)),
                 :repetitions(int-option(%o, 'repeat', 2)),
                 :max-output(int-option(%o, 'max-output', 65536)),
-                :resume(so %o<resume>), :$out);
+                :resume(so %o<resume>), :shrink(!so %o<no-shrink>),
+                :shrink-budget(int-option(%o, 'shrink-budget', 200)), :$out);
             say "done: {%s<cases>} cases, {%s<divergent>} divergences, "
               ~ "{%s<stable>} stable, {%s<oracle-invalid>} oracle-invalid";
         }

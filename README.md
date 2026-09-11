@@ -213,9 +213,11 @@ records generator settings, budgets, commands and one-time engine identities;
 `clusters.tsv` groups signatures and names a representative seed. Output capture
 defaults to 65,536 bytes per stream and can be changed with `--max-output=N`.
 Replay enforces recorded engine identities unless `--relax-identity` is given.
-Shrinking accepts a reduction only when the exact oracle/candidate signature
-pair survives every configured repetition. Sanitizer-family failures are
-recorded in findings and campaign summaries.
+Stable findings are shrunk automatically after clustering; use `--no-shrink`
+to disable it or `--shrink-budget=N` to change the default 200-attempt budget.
+A reduction is accepted only when the exact oracle/candidate signature pair
+survives every configured repetition. Sanitizer-family failures are recorded
+in findings and campaign summaries.
 
 Run the test suite with Raku++:
 
@@ -228,7 +230,7 @@ for test_file in t/*.rakutest; do rakupp -Ilib "$test_file" || break; done
 
 ```text
 out/findings/2026-09-09-00017/
-  case.raku             current reproducer (not minimized yet)
+  case.raku             current minimized reproducer
   original.raku         first generated program
   finding.json          seed, generator, engines, classification, signature
   oracle.stdout
@@ -237,6 +239,7 @@ out/findings/2026-09-09-00017/
   candidate.stderr
   oracle.signature
   candidate.signature
+  shrink.json           strategy, call budget and achieved size
 ```
 
 Generated bulk output lives under `out/` and is not committed. The fixed seeds

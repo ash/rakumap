@@ -8,7 +8,8 @@ my $root = $?FILE.IO.parent.parent;
 my $out = $*TMPDIR.add("rakumap-shrink-$*PID");
 my $oracle = $root.add('fixtures/engines/echo-a.sh').absolute.Str;
 my $candidate = $root.add('fixtures/engines/echo-b.sh').absolute.Str;
-explore(:seed(70), :cases(1), :repetitions(2), :timeout(2), :$oracle, :$candidate, :$out);
+explore(:seed(70), :cases(1), :repetitions(2), :timeout(2), :shrink(False),
+    :$oracle, :$candidate, :$out);
 my $finding = $out.add('findings/numeric-00000070');
 my $before = $finding.add('case.raku').s;
 my %result = shrink-dossier($finding, :$oracle, :$candidate,

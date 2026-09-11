@@ -2,7 +2,7 @@ use lib $?FILE.IO.parent.parent.add('lib').Str;
 use Test;
 use RakuMap::Campaign;
 
-plan 15;
+plan 17;
 
 my $root = $?FILE.IO.parent.parent;
 my $out = $*TMPDIR.add("rakumap-campaign-$*PID");
@@ -32,6 +32,9 @@ ok $out.add('clusters.tsv').slurp.starts-with("cluster\tcount\trepresentative-se
     'deterministic cluster summary is written';
 ok $finding.add('finding.json').slurp.contains('"cluster-key"'),
     'finding records its cluster key';
+ok $finding.add('shrink.json').f, 'stable finding is minimized automatically';
+ok $finding.add('original.raku').s >= $finding.add('case.raku').s,
+    'automatic minimization retains the original and a no-larger reproducer';
 my %resumed = explore(
     :seed(70), :cases(2), :repetitions(2), :timeout(2), :resume,
     :$oracle, :$candidate, :$out,
