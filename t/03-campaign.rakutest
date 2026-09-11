@@ -2,7 +2,7 @@ use lib $?FILE.IO.parent.parent.add('lib').Str;
 use Test;
 use RakuMap::Campaign;
 
-plan 17;
+plan 19;
 
 my $root = $?FILE.IO.parent.parent;
 my $out = $*TMPDIR.add("rakumap-campaign-$*PID");
@@ -30,6 +30,10 @@ is $out.add('results').dir(test => / '.tsv' $/).elems, 2,
     'one durable completion record is written per seed';
 ok $out.add('clusters.tsv').slurp.starts-with("cluster\tcount\trepresentative-seed"),
     'deterministic cluster summary is written';
+is $out.add('findings').dir.elems, 1,
+    'duplicate signatures share one representative dossier';
+ok $out.add('clusters.tsv').slurp.lines.grep(*.contains("\t2\t70")).elems == 1,
+    'cluster preserves duplicate count and representative seed';
 ok $finding.add('finding.json').slurp.contains('"cluster-key"'),
     'finding records its cluster key';
 ok $finding.add('shrink.json').f, 'stable finding is minimized automatically';

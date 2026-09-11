@@ -158,6 +158,12 @@ sub explore(Str:D :$oracle = 'raku', Str:D :$candidate = 'rakupp',
                 (%case<witness><template> // 'generated').Str, $pair);
             %clusters{$cluster}<count>++;
             %clusters{$cluster}<seed> //= $n;
+            if %clusters{$cluster}<count> > 1 {
+                atomic-write($result, "1\t{($stability eq 'stable').Int}\t{$is-invalid.Int}\t{$has-sanitizer.Int}\t$cluster");
+                say "duplicate generator=$name seed=$n cluster=$cluster "
+                  ~ "representative={%clusters{$cluster}<seed>}";
+                next;
+            }
             my $dir = $findings.add($name ~ '-' ~ $n.fmt('%08d'));
             $dir.mkdir unless $dir.d;
             write-text($dir.add('case.raku'), %case<source>);
