@@ -1,9 +1,9 @@
-unit module RakuMap::Campaign;
+unit module Rakumap::Campaign;
 
-use RakuMap::Generator::Registry;
-use RakuMap::Runner;
-use RakuMap::Sanitizer;
-use RakuMap::Shrink;
+use Rakumap::Generator::Registry;
+use Rakumap::Runner;
+use Rakumap::Sanitizer;
+use Rakumap::Shrink;
 
 sub json-escape(Str:D $s --> Str:D) {
     my $out = '';

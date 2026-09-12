@@ -1,21 +1,21 @@
-unit module RakuMap::Generator::Registry;
+unit module Rakumap::Generator::Registry;
 
-use RakuMap::Generator::Numeric;
-use RakuMap::Generator::Containers;
-use RakuMap::Generator::Signatures;
-use RakuMap::Generator::Unicode;
-use RakuMap::Generator::Regex;
-use RakuMap::Generator::Control;
-use RakuMap::Generator::Operators;
-use RakuMap::Generator::Types;
-use RakuMap::Generator::Variables;
-use RakuMap::Generator::Subs;
-use RakuMap::Generator::Methods;
-use RakuMap::Generator::Builtins;
-use RakuMap::Generator::Literals;
-use RakuMap::Generator::Phasers;
-use RakuMap::Generator::Concurrency;
-use RakuMap::Generator::Invalid;
+use Rakumap::Generator::Numeric;
+use Rakumap::Generator::Containers;
+use Rakumap::Generator::Signatures;
+use Rakumap::Generator::Unicode;
+use Rakumap::Generator::Regex;
+use Rakumap::Generator::Control;
+use Rakumap::Generator::Operators;
+use Rakumap::Generator::Types;
+use Rakumap::Generator::Variables;
+use Rakumap::Generator::Subs;
+use Rakumap::Generator::Methods;
+use Rakumap::Generator::Builtins;
+use Rakumap::Generator::Literals;
+use Rakumap::Generator::Phasers;
+use Rakumap::Generator::Concurrency;
+use Rakumap::Generator::Invalid;
 
 our constant @GENERATORS is export = <numeric containers signatures unicode regex control operators types variables subs methods builtins literals phasers concurrency invalid>;
 

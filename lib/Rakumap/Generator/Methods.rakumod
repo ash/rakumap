@@ -1,4 +1,4 @@
-unit module RakuMap::Generator::Methods;
+unit module Rakumap::Generator::Methods;
 
 my constant @TEMPLATES =
     'instance-method', 'class-method', 'attribute-accessor', 'private-method',

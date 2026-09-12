@@ -1,4 +1,4 @@
-unit module RakuMap::Export;
+unit module Rakumap::Export;
 
 my constant @CLASSIFICATIONS =
     'candidate-defect', 'intentional-divergence', 'oracle-suspect',
@@ -35,7 +35,7 @@ sub export-dossier(IO::Path:D $dossier, Str:D :$format!, IO::Path:D :$out! --> I
               ~ '  "oracle-output": ' ~ json-escape($oracle) ~ "\n}\n");
         }
         when 'standalone' {
-            $out.spurt("# RakuMap finding\n\nClassification: `$classification`\n\n"
+            $out.spurt("# Rakumap finding\n\nClassification: `$classification`\n\n"
               ~ "```raku\n$source" ~ ($source.ends-with("\n") ?? '' !! "\n") ~ "```\n");
         }
         default { die "unknown export format '$format'" }

@@ -1,7 +1,7 @@
 use lib $?FILE.IO.parent.parent.add('lib').Str;
 use Test;
-use RakuMap::Generator::Literals;
-use RakuMap::Generator::Registry;
+use Rakumap::Generator::Literals;
+use Rakumap::Generator::Registry;
 plan 9;
 my %first = generate-literals(40); my %again = generate-case('literals', 40);
 is %first<source>, %again<source>, 'registry preserves deterministic source';

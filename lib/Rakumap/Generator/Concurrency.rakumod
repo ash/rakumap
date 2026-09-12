@@ -1,4 +1,4 @@
-unit module RakuMap::Generator::Concurrency;
+unit module Rakumap::Generator::Concurrency;
 
 my constant @TEMPLATES =
     'start-await', 'await-list', 'kept-promise', 'broken-promise',

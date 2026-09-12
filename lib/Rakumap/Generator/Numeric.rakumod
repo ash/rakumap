@@ -1,4 +1,4 @@
-unit module RakuMap::Generator::Numeric;
+unit module Rakumap::Generator::Numeric;
 
 my constant @LEAVES =
     '0', '1', '-1', '2', '10',

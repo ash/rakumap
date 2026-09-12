@@ -1,7 +1,7 @@
 use lib $?FILE.IO.parent.parent.add('lib').Str;
 use Test;
-use RakuMap::Campaign;
-use RakuMap::Shrink;
+use Rakumap::Campaign;
+use Rakumap::Shrink;
 
 plan 7;
 my $root = $?FILE.IO.parent.parent;

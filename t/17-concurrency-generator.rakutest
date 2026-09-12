@@ -1,7 +1,7 @@
 use lib $?FILE.IO.parent.parent.add('lib').Str;
 use Test;
-use RakuMap::Generator::Concurrency;
-use RakuMap::Generator::Registry;
+use Rakumap::Generator::Concurrency;
+use Rakumap::Generator::Registry;
 plan 9;
 my %first = generate-concurrency(40); my %again = generate-case('concurrency', 40);
 is %first<source>, %again<source>, 'registry preserves deterministic source';

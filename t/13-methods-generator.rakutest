@@ -1,7 +1,7 @@
 use lib $?FILE.IO.parent.parent.add('lib').Str;
 use Test;
-use RakuMap::Generator::Methods;
-use RakuMap::Generator::Registry;
+use Rakumap::Generator::Methods;
+use Rakumap::Generator::Registry;
 
 plan 9;
 my %first = generate-methods(40);

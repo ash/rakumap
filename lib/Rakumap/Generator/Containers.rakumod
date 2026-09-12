@@ -1,4 +1,4 @@
-unit module RakuMap::Generator::Containers;
+unit module Rakumap::Generator::Containers;
 
 my constant @VALUES = '0', '1', '-1', '42', '1/2', '"text"', 'True';
 my constant @TEMPLATES =

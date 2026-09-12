@@ -1,4 +1,4 @@
-unit module RakuMap::Generator::Regex;
+unit module Rakumap::Generator::Regex;
 
 my constant @WORDS = <alpha beta gamma delta>;
 my constant @TEMPLATES =

@@ -1,4 +1,4 @@
-unit module RakuMap::Generator::Signatures;
+unit module Rakumap::Generator::Signatures;
 
 my constant @VALUES = '0', '1', '-1', '42', '"text"', 'True';
 my constant @INTS = '1', '2', '42', '9223372036854775808';

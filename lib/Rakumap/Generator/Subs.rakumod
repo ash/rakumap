@@ -1,4 +1,4 @@
-unit module RakuMap::Generator::Subs;
+unit module Rakumap::Generator::Subs;
 
 my constant @TEMPLATES =
     'basic-call', 'named-argument', 'optional-argument', 'slurpy-positional',

@@ -3,14 +3,14 @@
 *Written 2026-09-09, before implementation. Implementation status updated as
 the vertical slices land.*
 
-RakuMap is an autonomous differential explorer for Raku implementations. It is
+Rakumap is an autonomous differential explorer for Raku implementations. It is
 a sibling of Rakugrid, not a replacement: Rakugrid owns durable behavioural
-tests and adjudications; RakuMap owns search, stability, minimization and the
+tests and adjudications; Rakumap owns search, stability, minimization and the
 evidence package from which a durable test can be made.
 
 ## The first measurable claim
 
-Given two engine commands and the fixed numeric-v1 campaign, RakuMap generates
+Given two engine commands and the fixed numeric-v1 campaign, Rakumap generates
 10,000 deterministic, oracle-valid cases, executes both engines with bounded
 resources, reproduces every stable divergence from its seed, and automatically
 reduces each one while preserving its divergence signature. A killed, crashed
@@ -18,7 +18,7 @@ or timed-out engine never kills or wedges the campaign.
 
 The claim says **oracle-valid**, not “correct Raku.” A pinned Rakudo establishes
 that the reference accepts the program; adjudication decides what the language
-requires. RakuMap discovers evidence and does not turn an oracle observation
+requires. Rakumap discovers evidence and does not turn an oracle observation
 into a ruling silently.
 
 ## Terms
@@ -47,7 +47,7 @@ into a ruling silently.
 8. No normalizer may erase a semantic distinction without a pinned test.
 9. Search output is disposable; dossiers are reproducible; confirmed behaviour
    graduates to a permanent suite.
-10. RakuMap can consume Rakugrid vocabulary but neither repository is a runtime
+10. Rakumap can consume Rakugrid vocabulary but neither repository is a runtime
     dependency of the other.
 
 ## Observation envelope
@@ -163,7 +163,7 @@ Requirements:
 - compile-only then runtime modes;
 - cleanup after success, crash, timeout and coordinator interruption;
 - coordinator runs under Raku++; observed engines remain arbitrary child
-  commands and do not host RakuMap itself.
+  commands and do not host Rakumap itself.
 
 The first planted programs exit normally, reject at compile time, loop forever,
 fork/spawn a lingering child, crash, and emit unbounded output. Each must yield
@@ -307,13 +307,13 @@ idempotent and never marks a ruling as signed automatically.
 
 ```text
 bin/rakumap                  CLI
-lib/RakuMap.rakumod          version and public entry point
-lib/RakuMap/Runner.rakumod   P1 child-process boundary
-lib/RakuMap/Observation.rakumod
-lib/RakuMap/Campaign.rakumod
-lib/RakuMap/Compare.rakumod
-lib/RakuMap/Generators/      domain generators
-lib/RakuMap/Shrink/          domain reducers
+lib/Rakumap.rakumod          version and public entry point
+lib/Rakumap/Runner.rakumod   P1 child-process boundary
+lib/Rakumap/Observation.rakumod
+lib/Rakumap/Campaign.rakumod
+lib/Rakumap/Compare.rakumod
+lib/Rakumap/Generators/      domain generators
+lib/Rakumap/Shrink/          domain reducers
 t/                           deterministic unit and process tests
 fixtures/                    planted programs and engine shims
 out/                         ignored campaign output
@@ -343,7 +343,7 @@ Modules appear when their phase starts; empty architecture is not progress.
    engine-identity mismatch clearly.
 10. **Raku++ host:** the harness and every shipped `rakumap` command run under
     pinned Raku++; Rakudo may be an observed oracle child but is never the host
-    interpreter for RakuMap.
+    interpreter for Rakumap.
 
 Every gate gets a planted defect before it is trusted.
 
@@ -362,9 +362,9 @@ Every gate gets a planted defect before it is trusted.
 
 ## Relationship protocol with Rakugrid
 
-The repositories share concepts, not internal modules. RakuMap may consume a
+The repositories share concepts, not internal modules. Rakumap may consume a
 versioned Rakugrid export containing atom IDs, feature tags, facet coordinates,
-ladders and seed programs. Rakugrid may consume a versioned RakuMap export
+ladders and seed programs. Rakugrid may consume a versioned Rakumap export
 containing a minimized case, raw oracle observation, proposed comparator,
 provenance and dossier ID.
 
@@ -382,7 +382,7 @@ child engines.
 
 The release statement is narrow:
 
-> RakuMap can explore one defined numeric subset, distinguish acceptance,
+> Rakumap can explore one defined numeric subset, distinguish acceptance,
 > runtime and stability divergences between two Raku implementations, and turn
 > each stable result into a bounded, replayable, automatically minimized
 > dossier.

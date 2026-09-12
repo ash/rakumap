@@ -1,4 +1,4 @@
-unit module RakuMap::Generator::Variables;
+unit module Rakumap::Generator::Variables;
 
 my constant @TEMPLATES =
     'scalar-assignment', 'lexical-shadow', 'binding', 'destructure',

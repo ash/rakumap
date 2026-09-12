@@ -1,7 +1,7 @@
 use lib $?FILE.IO.parent.parent.add('lib').Str;
 use Test;
-use RakuMap::Generator::Phasers;
-use RakuMap::Generator::Registry;
+use Rakumap::Generator::Phasers;
+use Rakumap::Generator::Registry;
 plan 9;
 my %first = generate-phasers(40); my %again = generate-case('phasers', 40);
 is %first<source>, %again<source>, 'registry preserves deterministic source';

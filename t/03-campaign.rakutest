@@ -1,6 +1,6 @@
 use lib $?FILE.IO.parent.parent.add('lib').Str;
 use Test;
-use RakuMap::Campaign;
+use Rakumap::Campaign;
 
 plan 19;
 

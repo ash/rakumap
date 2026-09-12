@@ -1,4 +1,4 @@
-unit module RakuMap::Sanitizer;
+unit module Rakumap::Sanitizer;
 
 sub sanitizer-classification(%observation --> Str:D) is export {
     my $text = (%observation<compile><stderr> // '') ~ "\n"

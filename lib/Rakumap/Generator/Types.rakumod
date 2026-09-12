@@ -1,4 +1,4 @@
-unit module RakuMap::Generator::Types;
+unit module Rakumap::Generator::Types;
 
 my constant @TEMPLATES =
     'introspection', 'definedness', 'coercion', 'subset',

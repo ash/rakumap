@@ -1,6 +1,6 @@
-unit module RakuMap::Shrink;
+unit module Rakumap::Shrink;
 
-use RakuMap::Runner;
+use Rakumap::Runner;
 
 sub json-string(Str:D $value --> Str:D) {
     '"' ~ $value.subst('\\', '\\\\', :g).subst('"', '\\"', :g)

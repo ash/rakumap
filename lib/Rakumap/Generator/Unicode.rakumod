@@ -1,4 +1,4 @@
-unit module RakuMap::Generator::Unicode;
+unit module Rakumap::Generator::Unicode;
 
 # These are source literals, not host strings: retaining both composed and
 # decomposed spellings is the point of this domain.

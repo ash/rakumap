@@ -1,4 +1,4 @@
-unit module RakuMap::Generator::Invalid;
+unit module Rakumap::Generator::Invalid;
 
 my constant @TEMPLATES =
     'unclosed-paren', 'unterminated-string', 'unclosed-block', 'duplicate-parameter',

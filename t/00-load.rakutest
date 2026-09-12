@@ -1,7 +1,7 @@
 use lib $?FILE.IO.parent.parent.add('lib').Str;
 use Test;
-use RakuMap;
+use Rakumap;
 
 plan 2;
-is project-name(), 'RakuMap', 'module loads';
+is project-name(), 'Rakumap', 'module loads';
 is VERSION, '0.1.0-dev', 'version is explicit';

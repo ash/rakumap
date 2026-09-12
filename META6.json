@@ -1,32 +1,32 @@
 {
-  "name": "RakuMap",
+  "name": "Rakumap",
   "version": "0.1.0-dev",
   "description": "Differential exploration and shrinking for Raku implementations",
   "source-url": "git://github.com/ash/rakumap.git",
   "provides": {
-    "RakuMap": "lib/RakuMap.rakumod",
-    "RakuMap::Campaign": "lib/RakuMap/Campaign.rakumod",
-    "RakuMap::Generator::Containers": "lib/RakuMap/Generator/Containers.rakumod",
-    "RakuMap::Generator::Control": "lib/RakuMap/Generator/Control.rakumod",
-    "RakuMap::Generator::Numeric": "lib/RakuMap/Generator/Numeric.rakumod",
-    "RakuMap::Generator::Operators": "lib/RakuMap/Generator/Operators.rakumod",
-    "RakuMap::Generator::Types": "lib/RakuMap/Generator/Types.rakumod",
-    "RakuMap::Generator::Variables": "lib/RakuMap/Generator/Variables.rakumod",
-    "RakuMap::Generator::Subs": "lib/RakuMap/Generator/Subs.rakumod",
-    "RakuMap::Generator::Methods": "lib/RakuMap/Generator/Methods.rakumod",
-    "RakuMap::Generator::Builtins": "lib/RakuMap/Generator/Builtins.rakumod",
-    "RakuMap::Generator::Literals": "lib/RakuMap/Generator/Literals.rakumod",
-    "RakuMap::Generator::Phasers": "lib/RakuMap/Generator/Phasers.rakumod",
-    "RakuMap::Generator::Concurrency": "lib/RakuMap/Generator/Concurrency.rakumod",
-    "RakuMap::Generator::Invalid": "lib/RakuMap/Generator/Invalid.rakumod",
-    "RakuMap::Generator::Registry": "lib/RakuMap/Generator/Registry.rakumod",
-    "RakuMap::Generator::Regex": "lib/RakuMap/Generator/Regex.rakumod",
-    "RakuMap::Generator::Signatures": "lib/RakuMap/Generator/Signatures.rakumod",
-    "RakuMap::Generator::Unicode": "lib/RakuMap/Generator/Unicode.rakumod",
-    "RakuMap::Runner": "lib/RakuMap/Runner.rakumod"
-    ,"RakuMap::Shrink": "lib/RakuMap/Shrink.rakumod"
-    ,"RakuMap::Sanitizer": "lib/RakuMap/Sanitizer.rakumod"
-    ,"RakuMap::Export": "lib/RakuMap/Export.rakumod"
+    "Rakumap": "lib/Rakumap.rakumod",
+    "Rakumap::Campaign": "lib/Rakumap/Campaign.rakumod",
+    "Rakumap::Generator::Containers": "lib/Rakumap/Generator/Containers.rakumod",
+    "Rakumap::Generator::Control": "lib/Rakumap/Generator/Control.rakumod",
+    "Rakumap::Generator::Numeric": "lib/Rakumap/Generator/Numeric.rakumod",
+    "Rakumap::Generator::Operators": "lib/Rakumap/Generator/Operators.rakumod",
+    "Rakumap::Generator::Types": "lib/Rakumap/Generator/Types.rakumod",
+    "Rakumap::Generator::Variables": "lib/Rakumap/Generator/Variables.rakumod",
+    "Rakumap::Generator::Subs": "lib/Rakumap/Generator/Subs.rakumod",
+    "Rakumap::Generator::Methods": "lib/Rakumap/Generator/Methods.rakumod",
+    "Rakumap::Generator::Builtins": "lib/Rakumap/Generator/Builtins.rakumod",
+    "Rakumap::Generator::Literals": "lib/Rakumap/Generator/Literals.rakumod",
+    "Rakumap::Generator::Phasers": "lib/Rakumap/Generator/Phasers.rakumod",
+    "Rakumap::Generator::Concurrency": "lib/Rakumap/Generator/Concurrency.rakumod",
+    "Rakumap::Generator::Invalid": "lib/Rakumap/Generator/Invalid.rakumod",
+    "Rakumap::Generator::Registry": "lib/Rakumap/Generator/Registry.rakumod",
+    "Rakumap::Generator::Regex": "lib/Rakumap/Generator/Regex.rakumod",
+    "Rakumap::Generator::Signatures": "lib/Rakumap/Generator/Signatures.rakumod",
+    "Rakumap::Generator::Unicode": "lib/Rakumap/Generator/Unicode.rakumod",
+    "Rakumap::Runner": "lib/Rakumap/Runner.rakumod"
+    ,"Rakumap::Shrink": "lib/Rakumap/Shrink.rakumod"
+    ,"Rakumap::Sanitizer": "lib/Rakumap/Sanitizer.rakumod"
+    ,"Rakumap::Export": "lib/Rakumap/Export.rakumod"
   },
   "depends": [],
   "test-depends": ["Test"],

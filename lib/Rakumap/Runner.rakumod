@@ -1,4 +1,4 @@
-unit module RakuMap::Runner;
+unit module Rakumap::Runner;
 
 my $GUARD = 0;
 

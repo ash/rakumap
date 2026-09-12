@@ -1,14 +1,14 @@
 #!/usr/bin/env rakupp
 
 use lib $?FILE.IO.parent.parent.add('lib').Str;
-use RakuMap;
-use RakuMap::Campaign;
-use RakuMap::Shrink;
-use RakuMap::Export;
+use Rakumap;
+use Rakumap::Campaign;
+use Rakumap::Shrink;
+use Rakumap::Export;
 
 sub usage() {
     say qq:to/USAGE/;
-    RakuMap {VERSION} — autonomous differential exploration for Raku
+    Rakumap {VERSION} — autonomous differential exploration for Raku
 
     Usage:
       rakumap generate [--generator=NAME|all] [--seed=N] [--cases=N] [--out=DIR]

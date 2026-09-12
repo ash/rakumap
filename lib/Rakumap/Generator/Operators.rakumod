@@ -1,4 +1,4 @@
-unit module RakuMap::Generator::Operators;
+unit module Rakumap::Generator::Operators;
 
 my constant @NUMBERS = 1, 2, 3, 5, 8, 13;
 my constant @TEMPLATES =

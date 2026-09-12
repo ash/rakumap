@@ -1,7 +1,7 @@
 use lib $?FILE.IO.parent.parent.add('lib').Str;
 use Test;
-use RakuMap::Generator::Regex;
-use RakuMap::Generator::Registry;
+use Rakumap::Generator::Regex;
+use Rakumap::Generator::Registry;
 
 plan 9;
 

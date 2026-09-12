@@ -1,4 +1,4 @@
-unit module RakuMap::Generator::Phasers;
+unit module Rakumap::Generator::Phasers;
 
 my constant @TEMPLATES =
     'begin', 'check', 'init', 'end',

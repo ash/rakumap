@@ -1,4 +1,4 @@
-unit module RakuMap::Generator::Builtins;
+unit module Rakumap::Generator::Builtins;
 
 my constant @TEMPLATES =
     'numeric', 'rounding', 'minmax', 'string-shape',

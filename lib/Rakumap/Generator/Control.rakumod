@@ -1,4 +1,4 @@
-unit module RakuMap::Generator::Control;
+unit module Rakumap::Generator::Control;
 
 my constant @VALUES = 0, 1, 2, 3, 5, 8;
 my constant @TEMPLATES =

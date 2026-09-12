@@ -1,20 +1,20 @@
-# RakuMap
+# Rakumap
 
 Autonomous differential exploration for the Raku language.
 
 [Roast](https://github.com/Raku/roast) asks whether an implementation conforms
 to the language. [Rakugrid](https://github.com/ash/rakugrid) lays known Raku
-behaviour out as atoms, ladders and combinations. **RakuMap explores beyond the
+behaviour out as atoms, ladders and combinations. **Rakumap explores beyond the
 known grid**: it generates and mutates programs, runs them on multiple
 implementations, separates stable divergences from noise, shrinks each finding
 to its essential coordinates, and preserves enough evidence to reproduce and
 adjudicate it.
 
-The name is literal. Rakugrid is the coordinate system; RakuMap is the survey.
+The name is literal. Rakugrid is the coordinate system; Rakumap is the survey.
 
 ## The boundary with Rakugrid
 
-| | Rakugrid | RakuMap |
+| | Rakugrid | Rakumap |
 |---|---|---|
 | Primary job | Specify and gate known behaviour | Discover unknown behaviour |
 | Inputs | Curated atoms, inventories, generators, rulings | Seeds, transformations, typed grammars, engine commands |
@@ -22,7 +22,7 @@ The name is literal. Rakugrid is the coordinate system; RakuMap is the survey.
 | Normal mode | Deterministic test suite | Bounded autonomous search |
 | A result becomes permanent by | Living in the grid | Exporting to Rakugrid or an engine regression suite |
 
-RakuMap does not become another conformance suite. A finding stays a lead until
+Rakumap does not become another conformance suite. A finding stays a lead until
 it is minimized and classified. Confirmed language behaviour should graduate
 to Rakugrid; an implementation-specific regression may graduate directly to
 that implementation's suite.
@@ -56,7 +56,7 @@ not a way to lose the campaign.
 
 ## How validity is handled
 
-RakuMap never claims that random text is a correct program.
+Rakumap never claims that random text is a correct program.
 
 - Synthetic cases come from restricted, context-aware generators that know the
   shapes they produce.
@@ -80,8 +80,8 @@ bin/
   rakumap                         command-line entry point; runs under rakupp
 
 lib/
-  RakuMap.rakumod                 project name and version
-  RakuMap/
+  Rakumap.rakumod                 project name and version
+  Rakumap/
     Campaign.rakumod              generation, exploration, dossier writing, replay
     Runner.rakumod                bounded compile/run of observed child engines
     Shrink.rakumod                signature-preserving deterministic minimizer
@@ -167,14 +167,14 @@ META6.json                        Raku distribution metadata and module index
 .gitignore                        excludes generated campaign and editor/build state
 ```
 
-The code that generates programs belongs in `lib/RakuMap/Generator/`. Small,
+The code that generates programs belongs in `lib/Rakumap/Generator/`. Small,
 fixed examples used for review and regression live in `fixtures/generated/`.
 Exploration writes bulk programs and findings to `out/`; that directory is
 ignored because it may become large. A particularly useful finding may be
 copied to `fixtures/findings/` deliberately, together with its raw evidence.
 
 `fixtures/engines/` does not contain Raku implementations. Those scripts are
-controlled test doubles used to prove that RakuMap recognizes successful runs,
+controlled test doubles used to prove that Rakumap recognizes successful runs,
 compile rejection, differing output and timeouts without depending on a real
 engine defect.
 
@@ -182,7 +182,7 @@ engine defect.
 
 The first vertical slice is live: deterministic numeric program generation,
 bounded two-engine execution, stability checks, persisted dossiers and replay.
-RakuMap itself is hosted by Raku++; Rakudo is invoked only as an observed child
+Rakumap itself is hosted by Raku++; Rakudo is invoked only as an observed child
 when it is selected as the oracle.
 
 ```sh

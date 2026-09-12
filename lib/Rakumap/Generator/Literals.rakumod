@@ -1,4 +1,4 @@
-unit module RakuMap::Generator::Literals;
+unit module Rakumap::Generator::Literals;
 
 my constant @TEMPLATES =
     'integer-bases', 'digit-separators', 'rationals', 'scientific-num',
